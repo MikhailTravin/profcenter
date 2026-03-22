@@ -453,43 +453,21 @@ function formSubmit() {
         let formAction = form.getAttribute('action') ? form.getAttribute('action').trim() : '#';
         const formMethod = form.getAttribute('method') ? form.getAttribute('method').trim() : 'GET';
         const formData = new FormData(form);
-        const isFormSubmit = formAction.includes('formsubmit.co');
-        const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const isFormspree = formAction.includes('formspree.io');
 
         form.classList.add('_sending');
 
         try {
           let response;
 
-          if (isLocalhost && isFormSubmit) {
-            setTimeout(() => {
-              form.classList.remove('_sending');
-              formSent(form, { message: 'Тестовый режим: форма отправлена успешно!' });
-            }, 500);
-            return;
-          }
-
-          if (isFormSubmit) {
-            const formObject = {};
-            formData.forEach((value, key) => {
-              formObject[key] = value;
-            });
-
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 30000);
-
+          if (isFormspree) {
             response = await fetch(formAction, {
               method: 'POST',
-              mode: 'cors',
+              body: formData,
               headers: {
-                'Content-Type': 'application/json',
                 'Accept': 'application/json'
-              },
-              body: JSON.stringify(formObject),
-              signal: controller.signal
+              }
             });
-
-            clearTimeout(timeoutId);
           } else {
             response = await fetch(formAction, {
               method: formMethod,
@@ -498,31 +476,20 @@ function formSubmit() {
           }
 
           if (response.ok) {
-            let responseResult = await response.json();
+            let responseResult = {};
+            try {
+              responseResult = await response.json();
+            } catch (e) {
+              responseResult = { message: 'Спасибо за подписку!' };
+            }
             form.classList.remove('_sending');
             formSent(form, responseResult);
           } else {
-            if (isFormSubmit && response.status === 200) {
-              formSent(form, { message: 'Спасибо за подписку!' });
-            } else {
-              throw new Error('Ошибка отправки');
-            }
+            throw new Error('Ошибка отправки');
           }
         } catch (error) {
           console.error('Ошибка:', error);
-          if (error.name === 'AbortError') {
-            showFormError(form, 'Превышено время ожидания. Проверьте соединение.');
-          } else if (error.message === 'Failed to fetch') {
-            if (window.location.protocol === 'https:') {
-              showFormError(form, 'Ошибка соединения. Попробуйте еще раз.');
-            } else {
-              showFormError(form, 'Для отправки формы требуется HTTPS. Сайт будет работать после публикации.');
-            }
-          } else if (isLocalhost && isFormSubmit) {
-            formSent(form, { message: 'Тестовый режим: форма отправлена успешно!' });
-          } else {
-            showFormError(form, 'Произошла ошибка. Пожалуйста, попробуйте позже.');
-          }
+          showFormError(form, 'Произошла ошибка. Пожалуйста, попробуйте позже.');
           form.classList.remove('_sending');
         }
       } else if (form.hasAttribute('data-dev')) {
@@ -533,7 +500,9 @@ function formSubmit() {
       e.preventDefault();
       if (form.querySelector('._form-error') && form.hasAttribute('data-goto-error')) {
         const formGoToErrorClass = form.dataset.gotoError ? form.dataset.gotoError : '._form-error';
-        gotoBlock(formGoToErrorClass, true, 1000);
+        if (typeof gotoBlock === 'function') {
+          gotoBlock(formGoToErrorClass, true, 1000);
+        }
       }
     }
   }
@@ -543,13 +512,12 @@ function formSubmit() {
       errorDiv = document.createElement('div');
       errorDiv.className = 'form__error-message';
       errorDiv.style.cssText = 'color: red; margin-top: 10px; padding: 10px; background: #ffeeee; border-radius: 5px;';
-      form.querySelector('.form__body').appendChild(errorDiv);
+      const body = form.querySelector('.form__body');
+      if (body) body.appendChild(errorDiv);
     }
     errorDiv.textContent = message;
     setTimeout(() => {
-      if (errorDiv && errorDiv.remove) {
-        errorDiv.remove();
-      }
+      if (errorDiv && errorDiv.remove) errorDiv.remove();
     }, 5000);
   }
   function showFormSuccess(form, message) {
@@ -558,29 +526,24 @@ function formSubmit() {
       successDiv = document.createElement('div');
       successDiv.className = 'form__success-message';
       successDiv.style.cssText = 'color: green; margin-top: 10px; padding: 10px; background: #eeffee; border-radius: 5px;';
-      form.querySelector('.form__body').appendChild(successDiv);
+      const body = form.querySelector('.form__body');
+      if (body) body.appendChild(successDiv);
     }
     successDiv.textContent = message;
     setTimeout(() => {
-      if (successDiv && successDiv.remove) {
-        successDiv.remove();
-      }
+      if (successDiv && successDiv.remove) successDiv.remove();
     }, 5000);
   }
   function formSent(form, responseResult = ``) {
     document.dispatchEvent(new CustomEvent("formSent", {
-      detail: {
-        form: form
-      }
+      detail: { form: form }
     }));
     const telephoneInputs = form.querySelectorAll('.telephone');
     telephoneInputs.forEach(input => {
       const parent = input.closest('.form__input');
-      if (parent) {
-        parent.classList.remove('filled');
-      }
+      if (parent) parent.classList.remove('filled');
     });
-    const successMessage = responseResult?.message || 'Спасибо!';
+    const successMessage = responseResult?.message || 'Спасибо за подписку!';
     showFormSuccess(form, successMessage);
     setTimeout(() => {
       if (window.modules_flsModules && modules_flsModules.popup) {
