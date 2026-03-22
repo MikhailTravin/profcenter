@@ -534,6 +534,19 @@ function formSubmit() {
       errorDiv.remove();
     }, 5000);
   }
+  function showFormSuccess(form, message) {
+    let successDiv = form.querySelector('.form__success-message');
+    if (!successDiv) {
+      successDiv = document.createElement('div');
+      successDiv.className = 'form__success-message';
+      successDiv.style.cssText = 'color: green; margin-top: 10px; padding: 10px; background: #eeffee; border-radius: 5px;';
+      form.querySelector('.form__body').appendChild(successDiv);
+    }
+    successDiv.textContent = message;
+    setTimeout(() => {
+      successDiv.remove();
+    }, 5000);
+  }
   function formSent(form, responseResult = ``) {
     document.dispatchEvent(new CustomEvent("formSent", {
       detail: {
@@ -547,6 +560,8 @@ function formSubmit() {
         parent.classList.remove('filled');
       }
     });
+    const successMessage = responseResult?.message || 'Спасибо!';
+    showFormSuccess(form, successMessage);
     setTimeout(() => {
       if (modules_flsModules.popup) {
         const popup = form.dataset.popupMessage;
