@@ -4,26 +4,46 @@
     gap: 36px;
     align-items: center;
     width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+
     @media (max-width: 768px) {
         gap: 20px;
     }
 
-    // .form__title
+    &._watcher-view {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
+    // .form__title
     &__title {
         flex: 0 0 130px;
         font-weight: 600;
         font-size: 15px;
         line-height: 120%;
         color: #fff;
+        opacity: 0;
+        transform: translateY(15px);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+
         @media (max-width: 1100px) {
             text-align: center;
             flex: 1 1 auto;
         }
+
+        &._watcher-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     // .form__body
-
     &__body {
         width: 100%;
         display: flex;
@@ -35,15 +55,26 @@
         }
         .btn {
             flex: 0 0 190px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition:
+                opacity 0.4s ease,
+                transform 0.4s ease;
+            transition-delay: 0.2s;
+
             @media (max-width: 768px) {
                 flex: 0 1 auto;
                 width: 100%;
+            }
+
+            &._watcher-view {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
     }
 
     // .form__inputs
-
     &__inputs {
         flex: 1 1 auto;
         display: grid;
@@ -59,8 +90,26 @@
     }
 
     // .form__input
-
     &__input {
+        opacity: 0;
+        transform: translateY(15px);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+
+        &:first-child {
+            transition-delay: 0.05s;
+        }
+
+        &:last-child {
+            transition-delay: 0.1s;
+        }
+
+        &._watcher-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         input {
             width: 100%;
             border-radius: 3px;
@@ -87,13 +136,24 @@
     }
 
     // .form__text
-
     &__text {
         font-weight: 400;
         font-size: 14px;
         line-height: 129%;
         text-align: center;
         max-width: 410px;
+        opacity: 0;
+        transform: translateY(15px);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s ease;
+        transition-delay: 0.15s;
+
+        &._watcher-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         a {
             color: var(--theme-color-accent3);
             transition: opacity 0.3s;
