@@ -3363,6 +3363,15 @@ a {
   background: #fff;
   margin-bottom: -30px;
 }
+.header._header-scroll .header-top {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.header._header-scroll .header-menu {
+  margin-bottom: 0px;
+}
 
 .header-top {
   background: #f2f5f9;
@@ -3376,6 +3385,10 @@ a {
           justify-content: space-between;
   gap: 5px 20px;
   padding: 13px 25px;
+  max-height: 200px;
+  opacity: 1;
+  -webkit-transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
 }
 @media (max-width: 992px) {
   .header-top {
@@ -3515,6 +3528,8 @@ a {
   padding: 0px 10px 0px 0px;
   overflow: hidden;
   margin-bottom: -30px;
+  -webkit-transition: margin-bottom 0.3s;
+  transition: margin-bottom 0.3s;
 }
 @media (max-width: 1310px) {
   .header-menu {
