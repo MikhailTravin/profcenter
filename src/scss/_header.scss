@@ -189,7 +189,7 @@
             display: none;
             width: 24px;
             height: auto;
-            @media (max-width: 550px) {
+            @media (max-width: 768px) {
                 display: block;
             }
         }
@@ -203,15 +203,12 @@
             white-space: nowrap;
             border-bottom: 1px solid rgba(82, 164, 153, 0.3);
             transition: color 0.3s;
-            @media (max-width: 550px) {
+            @media (max-width: 768px) {
                 display: none;
             }
         }
         &:hover {
             color: rgba(82, 164, 153, 0.6);
-        }
-        @media (max-width: 768px) {
-            font-size: 12px;
         }
     }
 }

@@ -1,6 +1,6 @@
 body::after {
     content: "";
-    background-color: rgba(0, 0, 0, 0.34);
+    background-color: rgba(0, 0, 40, 0.5);
     position: fixed;
     width: 100%;
     height: 100%;
@@ -58,44 +58,105 @@ body::after {
     transform: scale(0);
     transition: transform 0.3s ease 0s;
     width: 100%;
-    border: 0.5px solid #2e1908;
     border-radius: 15px;
+    box-shadow: 0 30px 80px 0 rgba(28, 47, 45, 0.1);
     overflow: hidden;
-    max-width: 450px;
+    max-width: 410px;
     background: #fff;
-    padding: 30px 46px 30px 43px;
+    padding: 15px;
     .lock & {
         visibility: visible;
     }
-    @media (max-width: 768px) {
-        border: 0.5px solid rgba(46, 25, 8, 0.5);
-    }
     @media (max-width: 480px) {
-        padding: 20px;
+        padding: 10px;
     }
 }
 
 .popup__close {
     cursor: pointer;
     position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 13px;
-    height: 13px;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 12;
+    border-radius: 50%;
     transition: opacity 0.3;
-    @media (max-width: 480px) {
-        top: 10px;
-        right: 10px;
-    }
+    background-color: #2e59a0;
     img {
-        width: 100%;
+        width: 8px;
         height: auto;
     }
     &:hover {
         opacity: 0.7;
+    }
+    @media (max-width: 480px) {
+        top: 5px;
+        right: 4px;
+    }
+}
+
+.popup-call {
+    // .popup-call__body
+
+    &__body {
+        border-radius: 10px;
+        background: #f2f5f9;
+        padding: 38px 30px 35px 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        @media (max-width: 480px) {
+            padding: 20px 10px;
+        }
+        .form {
+            gap: 18px;
+        }
+        .form__body {
+            flex-direction: column;
+            gap: 20px;
+            .btn {
+                width: 100%;
+                flex: 0 1 auto;
+            }
+        }
+        .form__inputs {
+            width: 100%;
+            gap: 10px;
+            grid-template-columns: 1fr;
+        }
+        .form__text {
+            font-size: 12px;
+        }
+    }
+
+    // .popup-call__top
+
+    &__top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 125%;
+            text-align: center;
+            max-width: 230px;
+        }
+    }
+
+    // .popup-call__title
+
+    &__title {
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 110%;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        text-align: center;
     }
 }

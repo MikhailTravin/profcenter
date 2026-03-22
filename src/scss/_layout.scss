@@ -17,21 +17,21 @@
 .main {
   flex-grow: 1;
   flex-shrink: 1;
-  padding: 160px 0px 0px 0px;
+  margin: 160px 0px 0px 0px;
   @media (max-width: 1310px) {
-    padding: 130px 0px 0px 0px;
+    margin: 130px 0px 0px 0px;
   }
   @media (max-width: 1200px) {
-    padding: 120px 0px 0px 0px;
+    margin: 120px 0px 0px 0px;
   }
   @media (max-width: 992px) {
-    padding: 81px 0px 0px 0px;
+    margin: 81px 0px 0px 0px;
   }
   @media (max-width: 768px) {
-    padding: 56px 0px 0px 0px;
+    margin: 56px 0px 0px 0px;
   }
   @media (max-width: 550px) {
-    padding: 48px 0px 0px 0px;
+    margin: 48px 0px 0px 0px;
   }
 }
 
