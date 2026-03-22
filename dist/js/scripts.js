@@ -474,14 +474,22 @@ function formSubmit() {
             formData.forEach((value, key) => {
               formObject[key] = value;
             });
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+
             response = await fetch(formAction, {
               method: 'POST',
+              mode: 'cors',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
               },
-              body: JSON.stringify(formObject)
+              body: JSON.stringify(formObject),
+              signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
           } else {
             response = await fetch(formAction, {
               method: formMethod,
@@ -502,7 +510,15 @@ function formSubmit() {
           }
         } catch (error) {
           console.error('Ошибка:', error);
-          if (isLocalhost && isFormSubmit) {
+          if (error.name === 'AbortError') {
+            showFormError(form, 'Превышено время ожидания. Проверьте соединение.');
+          } else if (error.message === 'Failed to fetch') {
+            if (window.location.protocol === 'https:') {
+              showFormError(form, 'Ошибка соединения. Попробуйте еще раз.');
+            } else {
+              showFormError(form, 'Для отправки формы требуется HTTPS. Сайт будет работать после публикации.');
+            }
+          } else if (isLocalhost && isFormSubmit) {
             formSent(form, { message: 'Тестовый режим: форма отправлена успешно!' });
           } else {
             showFormError(form, 'Произошла ошибка. Пожалуйста, попробуйте позже.');
@@ -531,7 +547,9 @@ function formSubmit() {
     }
     errorDiv.textContent = message;
     setTimeout(() => {
-      errorDiv.remove();
+      if (errorDiv && errorDiv.remove) {
+        errorDiv.remove();
+      }
     }, 5000);
   }
   function showFormSuccess(form, message) {
@@ -544,7 +562,9 @@ function formSubmit() {
     }
     successDiv.textContent = message;
     setTimeout(() => {
-      successDiv.remove();
+      if (successDiv && successDiv.remove) {
+        successDiv.remove();
+      }
     }, 5000);
   }
   function formSent(form, responseResult = ``) {
@@ -563,12 +583,14 @@ function formSubmit() {
     const successMessage = responseResult?.message || 'Спасибо!';
     showFormSuccess(form, successMessage);
     setTimeout(() => {
-      if (modules_flsModules.popup) {
+      if (window.modules_flsModules && modules_flsModules.popup) {
         const popup = form.dataset.popupMessage;
         popup ? modules_flsModules.popup.open(popup) : null;
       }
     }, 0);
-    formValidate.formClean(form);
+    if (typeof formValidate !== 'undefined' && formValidate.formClean) {
+      formValidate.formClean(form);
+    }
   }
 }
 if (document.readyState === 'loading') {
