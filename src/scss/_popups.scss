@@ -114,11 +114,19 @@ body::after {
         }
         .form {
             gap: 18px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .form__title {
+            opacity: 1;
+            transform: translateY(0);
         }
         .form__body {
             flex-direction: column;
             gap: 20px;
             .btn {
+                opacity: 1;
+                transform: translateY(0);
                 width: 100%;
                 flex: 0 1 auto;
             }
@@ -128,8 +136,14 @@ body::after {
             gap: 10px;
             grid-template-columns: 1fr;
         }
+        .form__input {
+            opacity: 1;
+            transform: translateY(0);
+        }
         .form__text {
             font-size: 12px;
+            opacity: 1;
+            transform: translateY(0);
         }
     }
 
