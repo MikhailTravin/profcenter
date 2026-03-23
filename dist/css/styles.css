@@ -3942,6 +3942,14 @@ body::after {
 }
 .popup-call__body .form {
   gap: 18px;
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+.popup-call__body .form__title {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
 }
 .popup-call__body .form__body {
   -webkit-box-orient: vertical;
@@ -3951,6 +3959,9 @@ body::after {
   gap: 20px;
 }
 .popup-call__body .form__body .btn {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
   width: 100%;
   -webkit-box-flex: 0;
       -ms-flex: 0 1 auto;
@@ -3961,8 +3972,16 @@ body::after {
   gap: 10px;
   grid-template-columns: 1fr;
 }
+.popup-call__body .form__input {
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
 .popup-call__body .form__text {
   font-size: 12px;
+  opacity: 1;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
 }
 .popup-call__top {
   display: -webkit-box;
