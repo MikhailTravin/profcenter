@@ -3,23 +3,23 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+require __DIR__ . '/PHPMailer/src/Exception.php';
+require __DIR__ . '/PHPMailer/src/PHPMailer.php';
+require __DIR__ . '/PHPMailer/src/SMTP.php';
 
 $mail = new PHPMailer(true);
 $mail->CharSet = 'UTF-8';
-$mail->setLanguage('ru', 'phpmailer/language/');
+$mail->setLanguage('ru', __DIR__ . '/PHPMailer/language/');
 $mail->IsHTML(true);
 
-$mail->setFrom('mikhail.travin@gmail.com', 'Profcenter');
-$mail->addAddress('mikhail.travin@gmail.com');
+$mail->setFrom('profcentre@sama.ru', 'Profcenter');
+$mail->addAddress('profcentre@sama.ru');
 $mail->Subject = 'Новая подписка на рассылку - Profcenter';
 
 $mail->isSMTP();
 $mail->Host = 'smtp.gmail.com';
 $mail->SMTPAuth = true;
-$mail->Username = 'mikhail.travin@gmail.com';
+$mail->Username = 'profcentre@sama.ru';
 $mail->Password = 'pogv nnfc uvru xrll';
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
@@ -39,15 +39,6 @@ $body .= '<hr>';
 $body .= '<p style="color: #666; font-size: 12px;">Подписчик добавлен в базу для рассылки.</p>';
 
 $mail->Body = $body;
-
-if (!$mail->send()) {
-	$message = 'Ошибка при подписке. Пожалуйста, попробуйте позже.';
-} else {
-	$message = 'Спасибо за подписку! Мы будем присылать вам только самое интересное.';
-
-	$subscriber = date('Y-m-d H:i:s') . ' | ' . $_POST['name'] . ' | ' . $_POST['email'] . "\n";
-	file_put_contents('subscribers.txt', $subscriber, FILE_APPEND);
-}
 
 $response = ['message' => $message];
 header('Content-type: application/json');
