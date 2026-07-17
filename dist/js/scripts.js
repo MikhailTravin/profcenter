@@ -185,7 +185,7 @@ if (document.querySelector('.block-reviews__slider')) {
     observer: true,
     observeParents: true,
     slidesPerView: 'auto',
-    spaceBetween: 10,
+    spaceBetween: 15,
     speed: 800,
     pagination: {
       el: '.block-reviews__pagination',
@@ -219,7 +219,7 @@ if (document.querySelector('.block-benefits__slider')) {
     observer: true,
     observeParents: true,
     slidesPerView: 'auto',
-    spaceBetween: 10,
+    spaceBetween: 15,
     speed: 800,
     navigation: {
       prevEl: '.block-benefits__arrow-prev',
