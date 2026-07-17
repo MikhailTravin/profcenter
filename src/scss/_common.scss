@@ -11,27 +11,8 @@ body {
   .lock & {
     overflow: hidden;
   }
-  &::before {
-    content: "";
-    cursor: pointer;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 97;
-    background: rgba(0, 0, 40, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
   .menu-open & {
     overflow: hidden;
-    &::before {
-      content: "";
-      opacity: 1;
-      pointer-events: auto;
-    }
   }
 }
 
@@ -93,9 +74,7 @@ a {
     ),
     #52a499;
   @media (max-width: 550px) {
-    font-size: 14px;
     padding: 10px 15px;
-    min-height: 50px;
   }
   &::after {
     content: "";
@@ -163,7 +142,8 @@ a {
   line-height: 117%;
   color: #fff;
   @media (max-width: 768px) {
-    font-size: 28px;
+    font-size: 26px;
+    line-height: 123%;
   }
 }
 
@@ -186,8 +166,9 @@ a {
     transform: translateY(0);
   }
   @media (max-width: 768px) {
-    font-size: 25px;
-    margin: 0px 0px 20px 0px;
+    font-size: 26px;
+    line-height: 115%;
+    margin: 0px 0px 34px 0px;
   }
 }
 

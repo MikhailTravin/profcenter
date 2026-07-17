@@ -9,14 +9,35 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
+  &::before {
+    content: "";
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 97;
+    background: rgba(0, 0, 40, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .menu-open & {
+    &::before {
+      content: "";
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
   @media (max-width: 992px) {
     overflow: hidden;
   }
 }
 
 .main {
-  //flex-grow: 1;
-  //flex-shrink: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
   margin: 160px 0px 0px 0px;
   @media (max-width: 1310px) {
     margin: 130px 0px 0px 0px;
@@ -39,5 +60,5 @@
   margin: 0 auto;
   width: 100%;
   max-width: var(--container-width);
-  padding: 0px 10px;
+  padding: 0px 20px;
 }
