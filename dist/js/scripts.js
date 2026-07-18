@@ -236,6 +236,28 @@ if (document.querySelector('.block-benefits__slider')) {
   })
 }
 
+if (document.querySelector('.block-similar__slider')) {
+  const swiperSimilar = new Swiper('.block-similar__slider', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 'auto',
+    spaceBetween: 15,
+    speed: 800,
+    navigation: {
+      prevEl: '.block-similar__arrow-prev',
+      nextEl: '.block-similar__arrow-next',
+    },
+    breakpoints: {
+      1500: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+    },
+    on: {
+    },
+  })
+}
+
 //========================================================================================================================================================
 
 //Табы
@@ -1532,3 +1554,1069 @@ if (typeof window.modules_flsModules === 'undefined') {
 }
 window.modules_flsModules.popup = new Popup({});
 formSubmit();
+
+//========================================================================================================================================================
+
+const mapElement = document.querySelector('#map');
+if (mapElement) {
+  const mapObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        mapObserver.unobserve(mapElement);
+
+        if (typeof ymaps === 'undefined') {
+          const script = document.createElement('script');
+          script.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU';
+          script.async = true;
+
+          script.onload = () => {
+            if (typeof ymaps !== 'undefined') {
+              ymaps.ready(safeInitMap);
+            }
+          };
+
+          script.onerror = () => {
+            console.error('Yandex Maps failed to load');
+          };
+
+          document.head.appendChild(script);
+        } else {
+          ymaps.ready(safeInitMap);
+        }
+      }
+    });
+  }, {
+    rootMargin: '0px 0px 200px 0px'
+  });
+
+  mapObserver.observe(mapElement);
+}
+function safeInitMap() {
+  const mapElement = document.getElementById('map');
+  if (!mapElement || mapElement.dataset.initialized === 'true') return;
+
+  try {
+    const preview = mapElement.querySelector('.map-preview');
+    if (preview) preview.remove();
+
+    const myMap = new ymaps.Map('map', {
+      center: [53.209163, 50.126631],
+      zoom: 17,
+      controls: ['zoomControl']
+    });
+
+    // Метка
+    const placemark = new ymaps.Placemark([53.209163, 50.126631], {}, {
+      iconLayout: 'default#image',
+      iconImageHref: 'img/icons/map.svg',
+      iconImageSize: [100, 100],
+      iconImageOffset: [-50, -50]
+    });
+
+    myMap.geoObjects.add(placemark);
+    mapElement.dataset.initialized = 'true';
+
+  } catch (error) {
+    console.error("Map init error:", error);
+  }
+}
+
+//========================================================================================================================================================
+
+const fileInput = document.querySelector('.form-file-button input');
+const filesContainer = document.querySelector('.form-files');
+
+if (fileInput) {
+  function updateContainerVisibility() {
+    const hasFiles = filesContainer.querySelectorAll('.form-file').length > 0;
+    filesContainer.style.display = hasFiles ? 'flex' : 'none';
+  }
+
+  function addFiles(files) {
+    Array.from(files).forEach(file => {
+      const fileElement = document.createElement('div');
+      fileElement.className = 'form-file';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = file.name;
+      fileElement.appendChild(nameSpan);
+
+      const closeBtn = document.createElement('span');
+      closeBtn.className = 'form-file-close';
+      closeBtn.textContent = '×';
+
+      closeBtn.addEventListener('click', function (event) {
+        event.stopPropagation();
+        fileElement.remove();
+        updateContainerVisibility();
+      });
+
+      fileElement.appendChild(closeBtn);
+      filesContainer.appendChild(fileElement);
+    });
+
+    updateContainerVisibility();
+  }
+  fileInput.addEventListener('change', function (e) {
+    addFiles(this.files);
+    this.value = '';
+  });
+  updateContainerVisibility();
+}
+
+//========================================================================================================================================================
+
+if (document.querySelector('.images-product')) {
+  const thumbsSwiper = new Swiper('.images-product__thumb', {
+    observer: true,
+    observeParents: true,
+    slidesPerView: 'auto',
+    spaceBetween: 10,
+    speed: 400,
+    preloadImages: true,
+    breakpoints: {
+      768: {
+        spaceBetween: 15,
+      },
+    },
+  });
+
+  const mainThumbsSwiper = new Swiper('.images-product__slider', {
+    thumbs: {
+      swiper: thumbsSwiper
+    },
+    observer: true,
+    observeParents: true,
+    slidesPerView: 1,
+    spaceBetween: 20,
+    speed: 400,
+    preloadImages: true,
+    navigation: {
+      prevEl: '.images-product__arrow-prev',
+      nextEl: '.images-product__arrow-next',
+    },
+  });
+}
+
+//========================================================================================================================================================
+
+const buttons = document.querySelectorAll('.product-card-question__button');
+
+if (buttons) {
+  buttons.forEach(button => {
+    button.addEventListener('click', function (e) {
+      if (window.innerWidth <= 992) {
+        e.stopPropagation();
+        const parent = this.closest('.product-card-question');
+        if (parent) {
+          parent.classList.toggle('active');
+        }
+      }
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (window.innerWidth <= 992) {
+      const target = e.target.closest('.product-card-question');
+
+      if (!target) {
+        const allBlocks = document.querySelectorAll('.product-card-question.active');
+        allBlocks.forEach(block => {
+          const button = block.querySelector('.product-card-question__button');
+          if (button && !button.contains(e.target)) {
+            block.classList.remove('active');
+          }
+        });
+      }
+    }
+  });
+}
+
+//========================================================================================================================================================
+
+class SelectConstructor {
+  constructor(props, data = null) {
+    let defaultConfig = {
+      init: true,
+      logging: true,
+      speed: 150
+    }
+    this.config = Object.assign(defaultConfig, props);
+    this.selectClasses = {
+      classSelect: "select",
+      classSelectBody: "select__body",
+      classSelectTitle: "select__title",
+      classSelectValue: "select__value",
+      classSelectLabel: "select__label",
+      classSelectInput: "select__input",
+      classSelectText: "select__text",
+      classSelectLink: "select__link",
+      classSelectOptions: "select__options",
+      classSelectOptionsScroll: "select__scroll",
+      classSelectOption: "select__option",
+      classSelectContent: "select__content",
+      classSelectRow: "select__row",
+      classSelectData: "select__asset",
+      classSelectArrow: "select__arrow",
+      classSelectDisabled: "_select-disabled",
+      classSelectTag: "_select-tag",
+      classSelectOpen: "_select-open",
+      classSelectActive: "_select-active",
+      classSelectFocus: "_select-focus",
+      classSelectMultiple: "_select-multiple",
+      classSelectCheckBox: "_select-checkbox",
+      classSelectOptionSelected: "_select-selected",
+      classSelectPseudoLabel: "_select-pseudo-label",
+    }
+    this._this = this;
+    if (this.config.init) {
+      const selectItems = data ? document.querySelectorAll(data) : document.querySelectorAll('select');
+      if (selectItems.length) {
+        this.selectsInit(selectItems);
+      }
+    }
+  }
+  getSelectClass(className) {
+    return `.${className}`;
+  }
+  getSelectElement(selectItem, className) {
+    return {
+      originalSelect: selectItem.querySelector('select'),
+      selectElement: selectItem.querySelector(this.getSelectClass(className)),
+    }
+  }
+  selectsInit(selectItems) {
+    selectItems.forEach((originalSelect, index) => {
+      this.selectInit(originalSelect, index + 1);
+    });
+    document.addEventListener('click', function (e) {
+      this.selectsActions(e);
+    }.bind(this));
+    document.addEventListener('keydown', function (e) {
+      this.selectsActions(e);
+    }.bind(this));
+    document.addEventListener('focusin', function (e) {
+      this.selectsActions(e);
+    }.bind(this));
+    document.addEventListener('focusout', function (e) {
+      this.selectsActions(e);
+    }.bind(this));
+  }
+  selectInit(originalSelect, index) {
+    const _this = this;
+    let selectItem = document.createElement("div");
+    selectItem.classList.add(this.selectClasses.classSelect);
+    originalSelect.parentNode.insertBefore(selectItem, originalSelect);
+    selectItem.appendChild(originalSelect);
+    originalSelect.hidden = true;
+    index ? originalSelect.dataset.id = index : null;
+
+    selectItem.insertAdjacentHTML('beforeend', `<div class="${this.selectClasses.classSelectBody}"><div hidden class="${this.selectClasses.classSelectOptions}"></div></div>`);
+
+    if (this.getSelectPlaceholder(originalSelect)) {
+      originalSelect.dataset.placeholder = this.getSelectPlaceholder(originalSelect).value;
+    }
+
+    this.selectBuild(originalSelect);
+
+    originalSelect.dataset.speed = originalSelect.dataset.speed ? originalSelect.dataset.speed : this.config.speed;
+    this.config.speed = +originalSelect.dataset.speed;
+
+    originalSelect.addEventListener('change', function (e) {
+      _this.selectChange(e);
+    });
+  }
+  selectBuild(originalSelect) {
+    const selectItem = originalSelect.parentElement;
+
+    selectItem.dataset.id = originalSelect.dataset.id;
+    originalSelect.dataset.classModif ? selectItem.classList.add(`select_${originalSelect.dataset.classModif}`) : null;
+
+    originalSelect.multiple ? selectItem.classList.add(this.selectClasses.classSelectMultiple) : selectItem.classList.remove(this.selectClasses.classSelectMultiple);
+
+    originalSelect.hasAttribute('data-checkbox') && originalSelect.multiple ? selectItem.classList.add(this.selectClasses.classSelectCheckBox) : selectItem.classList.remove(this.selectClasses.classSelectCheckBox);
+
+    this.setSelectTitleValue(selectItem, originalSelect);
+    this.setOptions(selectItem, originalSelect);
+    originalSelect.hasAttribute('data-search') ? this.searchActions(selectItem) : null;
+
+    originalSelect.hasAttribute('data-open') ? this.selectAction(selectItem) : null;
+
+    this.selectDisabled(selectItem, originalSelect);
+  }
+  selectsActions(e) {
+    const targetElement = e.target;
+    const targetType = e.type;
+    if (targetElement.closest(this.getSelectClass(this.selectClasses.classSelect)) || targetElement.closest(this.getSelectClass(this.selectClasses.classSelectTag))) {
+      const selectItem = targetElement.closest('.select') ? targetElement.closest('.select') : document.querySelector(`.${this.selectClasses.classSelect}[data-id="${targetElement.closest(this.getSelectClass(this.selectClasses.classSelectTag)).dataset.selectId}"]`);
+      const originalSelect = this.getSelectElement(selectItem).originalSelect;
+      if (targetType === 'click') {
+        if (!originalSelect.disabled) {
+          if (targetElement.closest(this.getSelectClass(this.selectClasses.classSelectTag))) {
+
+            const targetTag = targetElement.closest(this.getSelectClass(this.selectClasses.classSelectTag));
+            const optionItem = document.querySelector(`.${this.selectClasses.classSelect}[data-id="${targetTag.dataset.selectId}"] .select__option[data-value="${targetTag.dataset.value}"]`);
+            this.optionAction(selectItem, originalSelect, optionItem);
+          } else if (targetElement.closest(this.getSelectClass(this.selectClasses.classSelectTitle))) {
+            this.selectAction(selectItem);
+          } else if (targetElement.closest(this.getSelectClass(this.selectClasses.classSelectOption))) {
+            const optionItem = targetElement.closest(this.getSelectClass(this.selectClasses.classSelectOption));
+            this.optionAction(selectItem, originalSelect, optionItem);
+          }
+        }
+      } else if (targetType === 'focusin' || targetType === 'focusout') {
+        if (targetElement.closest(this.getSelectClass(this.selectClasses.classSelect))) {
+          targetType === 'focusin' ? selectItem.classList.add(this.selectClasses.classSelectFocus) : selectItem.classList.remove(this.selectClasses.classSelectFocus);
+        }
+      } else if (targetType === 'keydown' && e.code === 'Escape') {
+        this.selectsСlose();
+      }
+    } else {
+      this.selectsСlose();
+    }
+  }
+  selectsСlose(selectOneGroup) {
+    const selectsGroup = selectOneGroup ? selectOneGroup : document;
+    const selectActiveItems = selectsGroup.querySelectorAll(`${this.getSelectClass(this.selectClasses.classSelect)}${this.getSelectClass(this.selectClasses.classSelectOpen)}`);
+    if (selectActiveItems.length) {
+      selectActiveItems.forEach(selectActiveItem => {
+        this.selectСlose(selectActiveItem);
+      });
+    }
+  }
+  selectСlose(selectItem) {
+    const originalSelect = this.getSelectElement(selectItem).originalSelect;
+    const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+    if (!selectOptions.classList.contains('_slide')) {
+      selectItem.classList.remove(this.selectClasses.classSelectOpen);
+      _slideUp(selectOptions, originalSelect.dataset.speed);
+      setTimeout(() => {
+        selectItem.style.zIndex = '';
+      }, originalSelect.dataset.speed);
+    }
+  }
+  selectAction(selectItem) {
+    const originalSelect = this.getSelectElement(selectItem).originalSelect;
+    const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+    const selectOpenzIndex = originalSelect.dataset.zIndex ? originalSelect.dataset.zIndex : 3;
+
+    this.setOptionsPosition(selectItem);
+
+    this.selectsСlose();
+
+    setTimeout(() => {
+      if (!selectOptions.classList.contains('_slide')) {
+        selectItem.classList.toggle(this.selectClasses.classSelectOpen);
+        _slideToggle(selectOptions, originalSelect.dataset.speed);
+
+        if (selectItem.classList.contains(this.selectClasses.classSelectOpen)) {
+          selectItem.style.zIndex = selectOpenzIndex;
+        } else {
+          setTimeout(() => {
+            selectItem.style.zIndex = '';
+          }, originalSelect.dataset.speed);
+        }
+      }
+    }, 0);
+  }
+  setSelectTitleValue(selectItem, originalSelect) {
+    const selectItemBody = this.getSelectElement(selectItem, this.selectClasses.classSelectBody).selectElement;
+    const selectItemTitle = this.getSelectElement(selectItem, this.selectClasses.classSelectTitle).selectElement;
+    if (selectItemTitle) selectItemTitle.remove();
+    selectItemBody.insertAdjacentHTML("afterbegin", this.getSelectTitleValue(selectItem, originalSelect));
+
+    originalSelect.hasAttribute('data-search') ? this.searchActions(selectItem) : null;
+  }
+  getSelectTitleValue(selectItem, originalSelect) {
+    let selectTitleValue = this.getSelectedOptionsData(originalSelect, 2).html;
+    const selectedOptions = this.getSelectedOptionsData(originalSelect);
+
+    if (originalSelect.multiple && originalSelect.hasAttribute('data-tags')) {
+      selectTitleValue = selectedOptions.elements.map(option => `<span role="button" data-select-id="${selectItem.dataset.id}" data-value="${option.value}" class="${this.selectClasses.classSelectTag}">${this.getSelectElementContent(option)}</span>`).join('');
+
+      if (originalSelect.dataset.tags && document.querySelector(originalSelect.dataset.tags)) {
+        document.querySelector(originalSelect.dataset.tags).innerHTML = selectTitleValue;
+        if (originalSelect.hasAttribute('data-search')) selectTitleValue = false;
+      }
+    }
+
+    if (selectedOptions.values.length > 0) {
+      selectTitleValue = selectTitleValue.length ? selectTitleValue : '';
+    } else {
+      selectTitleValue = originalSelect.dataset.placeholder ? originalSelect.dataset.placeholder : '';
+    }
+
+    let pseudoAttribute = '';
+    let pseudoAttributeClass = '';
+    if (originalSelect.hasAttribute('data-pseudo-label')) {
+      pseudoAttribute = originalSelect.dataset.pseudoLabel ? ` data-pseudo-label="${originalSelect.dataset.pseudoLabel}"` : ` data-pseudo-label="Заповніть атрибут"`;
+      pseudoAttributeClass = ` ${this.selectClasses.classSelectPseudoLabel}`;
+    }
+
+    selectedOptions.values.length ? selectItem.classList.add(this.selectClasses.classSelectActive) : selectItem.classList.remove(this.selectClasses.classSelectActive);
+
+    if (originalSelect.hasAttribute('data-search')) {
+      return `<div class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}"><input autocomplete="off" type="text" placeholder="${selectTitleValue}" data-placeholder="${selectTitleValue}" class="${this.selectClasses.classSelectInput}"></span></div>`;
+    } else {
+      const customClass = selectedOptions.elements.length && selectedOptions.elements[0] && selectedOptions.elements[0].dataset.class ? ` ${selectedOptions.elements[0].dataset.class}` : '';
+
+      return `<button type="button" class="${this.selectClasses.classSelectTitle}"><span${pseudoAttribute} class="${this.selectClasses.classSelectValue}${pseudoAttributeClass}"><span class="${this.selectClasses.classSelectContent}${customClass}">${selectTitleValue}</span><span class="${this.selectClasses.classSelectArrow}"></span></span></button>`;
+    }
+  }
+  getSelectElementContent(selectOption) {
+    const selectOptionData = selectOption.dataset.asset ? `${selectOption.dataset.asset}` : '';
+    const selectOptionDataHTML = selectOptionData.indexOf('img') >= 0 ? `<img src="${selectOptionData}" alt="">` : selectOptionData;
+    let selectOptionContentHTML = ``;
+    selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectRow}">` : '';
+    selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectData}">` : '';
+    selectOptionContentHTML += selectOptionData ? selectOptionDataHTML : '';
+    selectOptionContentHTML += selectOptionData ? `</span>` : '';
+    selectOptionContentHTML += selectOptionData ? `<span class="${this.selectClasses.classSelectText}">` : '';
+    selectOptionContentHTML += selectOption.textContent;
+    selectOptionContentHTML += selectOptionData ? `</span>` : '';
+    selectOptionContentHTML += selectOptionData ? `</span>` : '';
+    return selectOptionContentHTML;
+  }
+  getSelectPlaceholder(originalSelect) {
+    const selectPlaceholder = Array.from(originalSelect.options).find(option => !option.value);
+    if (selectPlaceholder) {
+      return {
+        value: selectPlaceholder.textContent,
+        show: selectPlaceholder.hasAttribute("data-show"),
+        label: {
+          show: selectPlaceholder.hasAttribute("data-label"),
+          text: selectPlaceholder.dataset.label
+        }
+      }
+    }
+  }
+
+  getSelectedOptionsData(originalSelect, type) {
+    let selectedOptions = [];
+    if (originalSelect.multiple) {
+      selectedOptions = Array.from(originalSelect.options).filter(option => option.value).filter(option => option.selected);
+    } else {
+      if (originalSelect.selectedIndex >= 0 && originalSelect.options[originalSelect.selectedIndex]) {
+        const option = originalSelect.options[originalSelect.selectedIndex];
+        if (option.value) {
+          selectedOptions.push(option);
+        }
+      }
+    }
+    return {
+      elements: selectedOptions.map(option => option),
+      values: selectedOptions.filter(option => option && option.value).map(option => option.value),
+      html: selectedOptions.map(option => this.getSelectElementContent(option))
+    }
+  }
+  getOptions(originalSelect) {
+    const selectOptionsScroll = originalSelect.hasAttribute('data-scroll') ? `data-simplebar` : '';
+    const customMaxHeightValue = +originalSelect.dataset.scroll ? +originalSelect.dataset.scroll : null;
+    let selectOptions = Array.from(originalSelect.options);
+    if (selectOptions.length > 0) {
+      let selectOptionsHTML = ``;
+
+      selectOptions = selectOptions.filter(option => option.value);
+
+      selectOptionsHTML += `<div ${selectOptionsScroll} ${selectOptionsScroll ? `style="max-height: ${customMaxHeightValue}px"` : ''} class="${this.selectClasses.classSelectOptionsScroll}">`;
+      selectOptions.forEach(selectOption => {
+        selectOptionsHTML += this.getOption(selectOption, originalSelect);
+      });
+      selectOptionsHTML += `</div>`;
+      return selectOptionsHTML;
+    }
+  }
+  getOption(selectOption, originalSelect) {
+    const selectOptionSelected = selectOption.selected && originalSelect.multiple ? ` ${this.selectClasses.classSelectOptionSelected}` : '';
+
+    const selectOptionHide = selectOption.selected && !originalSelect.hasAttribute('data-show-selected') && !originalSelect.multiple && selectOption.value ? `hidden` : ``;
+
+    const selectOptionClass = selectOption.dataset.class ? ` ${selectOption.dataset.class}` : '';
+    const selectOptionLink = selectOption.dataset.href ? selectOption.dataset.href : false;
+    const selectOptionLinkTarget = selectOption.hasAttribute('data-href-blank') ? `target="_blank"` : '';
+    let selectOptionHTML = ``;
+    selectOptionHTML += selectOptionLink ? `<a ${selectOptionLinkTarget} ${selectOptionHide} href="${selectOptionLink}" data-value="${selectOption.value}" class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}">` : `<button ${selectOptionHide} class="${this.selectClasses.classSelectOption}${selectOptionClass}${selectOptionSelected}" data-value="${selectOption.value}" type="button">`;
+    selectOptionHTML += this.getSelectElementContent(selectOption);
+    selectOptionHTML += selectOptionLink ? `</a>` : `</button>`;
+    return selectOptionHTML;
+  }
+  setOptions(selectItem, originalSelect) {
+    const selectItemOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+    selectItemOptions.innerHTML = this.getOptions(originalSelect);
+  }
+  setOptionsPosition(selectItem) {
+    const originalSelect = this.getSelectElement(selectItem).originalSelect;
+    const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+    const selectItemScroll = this.getSelectElement(selectItem, this.selectClasses.classSelectOptionsScroll).selectElement;
+    const customMaxHeightValue = +originalSelect.dataset.scroll ? `${+originalSelect.dataset.scroll}px` : ``;
+    const selectOptionsPosMargin = +originalSelect.dataset.optionsMargin ? +originalSelect.dataset.optionsMargin : 10;
+
+    if (!selectItem.classList.contains(this.selectClasses.classSelectOpen)) {
+      selectOptions.hidden = false;
+      const selectItemScrollHeight = selectItemScroll.offsetHeight ? selectItemScroll.offsetHeight : parseInt(window.getComputedStyle(selectItemScroll).getPropertyValue('max-height'));
+      const selectOptionsHeight = selectOptions.offsetHeight > selectItemScrollHeight ? selectOptions.offsetHeight : selectItemScrollHeight + selectOptions.offsetHeight;
+      const selectOptionsScrollHeight = selectOptionsHeight - selectItemScrollHeight;
+      selectOptions.hidden = true;
+
+      const selectItemHeight = selectItem.offsetHeight;
+      const selectItemPos = selectItem.getBoundingClientRect().top;
+      const selectItemTotal = selectItemPos + selectOptionsHeight + selectItemHeight + selectOptionsScrollHeight;
+      const selectItemResult = window.innerHeight - (selectItemTotal + selectOptionsPosMargin);
+
+      if (selectItemResult < 0) {
+        const newMaxHeightValue = selectOptionsHeight + selectItemResult;
+        if (newMaxHeightValue < 100) {
+          selectItem.classList.add('select--show-top');
+          selectItemScroll.style.maxHeight = selectItemPos < selectOptionsHeight ? `${selectItemPos - (selectOptionsHeight - selectItemPos)}px` : customMaxHeightValue;
+        } else {
+          selectItem.classList.remove('select--show-top');
+          selectItemScroll.style.maxHeight = `${newMaxHeightValue}px`;
+        }
+      }
+    } else {
+      setTimeout(() => {
+        selectItem.classList.remove('select--show-top');
+        selectItemScroll.style.maxHeight = customMaxHeightValue;
+      }, +originalSelect.dataset.speed);
+    }
+  }
+  optionAction(selectItem, originalSelect, optionItem) {
+    const selectOptions = selectItem.querySelector(`${this.getSelectClass(this.selectClasses.classSelectOptions)}`);
+    if (!selectOptions.classList.contains('_slide')) {
+      if (originalSelect.multiple) {
+        optionItem.classList.toggle(this.selectClasses.classSelectOptionSelected);
+        const originalSelectSelectedItems = this.getSelectedOptionsData(originalSelect).elements;
+        originalSelectSelectedItems.forEach(originalSelectSelectedItem => {
+          originalSelectSelectedItem.removeAttribute('selected');
+        });
+        const selectSelectedItems = selectItem.querySelectorAll(this.getSelectClass(this.selectClasses.classSelectOptionSelected));
+        selectSelectedItems.forEach(selectSelectedItems => {
+          originalSelect.querySelector(`option[value = "${selectSelectedItems.dataset.value}"]`).setAttribute('selected', 'selected');
+        });
+      } else {
+        if (optionItem.dataset.value) {
+          if (!originalSelect.hasAttribute('data-show-selected')) {
+            setTimeout(() => {
+              if (selectItem.querySelector(`${this.getSelectClass(this.selectClasses.classSelectOption)}[hidden]`)) {
+                selectItem.querySelector(`${this.getSelectClass(this.selectClasses.classSelectOption)}[hidden]`).hidden = false;
+              }
+              optionItem.hidden = true;
+            }, this.config.speed);
+          }
+          originalSelect.value = optionItem.dataset.value;
+          this.selectAction(selectItem);
+        }
+      }
+      this.setSelectTitleValue(selectItem, originalSelect);
+      this.setSelectChange(originalSelect);
+    }
+  }
+  selectChange(e) {
+    const originalSelect = e.target;
+    this.selectBuild(originalSelect);
+    this.setSelectChange(originalSelect);
+  }
+  setSelectChange(originalSelect) {
+    if (originalSelect.hasAttribute('data-validate')) {
+      if (window.formValidate) {
+        window.formValidate.validateInput(originalSelect);
+      }
+    }
+    if (originalSelect.hasAttribute('data-submit') && originalSelect.value) {
+      let tempButton = document.createElement("button");
+      tempButton.type = "submit";
+      const form = originalSelect.closest('form');
+      if (form) {
+        form.appendChild(tempButton);
+        tempButton.click();
+        tempButton.remove();
+      }
+    }
+    const selectItem = originalSelect.parentElement;
+    this.selectCallback(selectItem, originalSelect);
+  }
+  selectDisabled(selectItem, originalSelect) {
+    if (originalSelect.disabled) {
+      selectItem.classList.add(this.selectClasses.classSelectDisabled);
+      const titleElement = this.getSelectElement(selectItem, this.selectClasses.classSelectTitle).selectElement;
+      if (titleElement) titleElement.disabled = true;
+    } else {
+      selectItem.classList.remove(this.selectClasses.classSelectDisabled);
+      const titleElement = this.getSelectElement(selectItem, this.selectClasses.classSelectTitle).selectElement;
+      if (titleElement) titleElement.disabled = false;
+    }
+  }
+  searchActions(selectItem) {
+    const originalSelect = this.getSelectElement(selectItem).originalSelect;
+    const selectInput = this.getSelectElement(selectItem, this.selectClasses.classSelectInput).selectElement;
+    const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
+    const selectOptionsItems = selectOptions.querySelectorAll(`.${this.selectClasses.classSelectOption} `);
+    const _this = this;
+    selectInput.addEventListener("input", function () {
+      selectOptionsItems.forEach(selectOptionsItem => {
+        if (selectOptionsItem.textContent.toUpperCase().includes(selectInput.value.toUpperCase())) {
+          selectOptionsItem.hidden = false;
+        } else {
+          selectOptionsItem.hidden = true;
+        }
+      });
+      selectOptions.hidden === true ? _this.selectAction(selectItem) : null;
+    });
+  }
+  selectCallback(selectItem, originalSelect) {
+    document.dispatchEvent(new CustomEvent("selectCallback", {
+      detail: {
+        select: originalSelect
+      }
+    }));
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function () {
+    window.modules_flsModules = window.modules_flsModules || {};
+    modules_flsModules.select = new SelectConstructor({});
+  });
+} else {
+  window.modules_flsModules = window.modules_flsModules || {};
+  modules_flsModules.select = new SelectConstructor({});
+}
+
+//========================================================================================================================================================
+
+function spollers() {
+  const spollersArray = document.querySelectorAll("[data-spollers]");
+  if (spollersArray.length > 0) {
+    const spollersRegular = Array.from(spollersArray).filter((function (item, index, self) {
+      return !item.dataset.spollers.split(",")[0];
+    }));
+    if (spollersRegular.length) initSpollers(spollersRegular);
+
+    spollersArray.forEach(spollersBlock => {
+      const mediaQuery = spollersBlock.dataset.spollers;
+      if (mediaQuery) {
+        const [width, type] = mediaQuery.split(",");
+        const size = parseInt(width);
+        const trimmedType = type ? type.trim() : '';
+
+        if (trimmedType === "min") {
+          if (window.innerWidth >= size) {
+            if (!spollersBlock.classList.contains("_spoller-init")) {
+              initSpollers([spollersBlock]);
+            }
+          } else {
+            if (spollersBlock.classList.contains("_spoller-init")) {
+              spollersBlock.classList.remove("_spoller-init");
+              showAllContent(spollersBlock);
+              spollersBlock.removeEventListener("click", setSpollerAction);
+            }
+          }
+        }
+        else if (trimmedType === "max" && window.innerWidth <= size) {
+          if (!spollersBlock.classList.contains("_spoller-init")) {
+            initSpollers([spollersBlock]);
+          }
+        } else if (trimmedType === "max" && window.innerWidth > size) {
+          if (spollersBlock.classList.contains("_spoller-init")) {
+            spollersBlock.classList.remove("_spoller-init");
+            showAllContent(spollersBlock);
+            spollersBlock.removeEventListener("click", setSpollerAction);
+          }
+        }
+      }
+    });
+
+    function showAllContent(spollersBlock) {
+      const allTexts = spollersBlock.querySelectorAll('.block-compound-spollers__text');
+      allTexts.forEach(text => {
+        text.hidden = false;
+        text.style.display = 'block';
+        text.style.height = 'auto';
+        text.style.opacity = '1';
+      });
+
+      const allTitles = spollersBlock.querySelectorAll('[data-spoller]');
+      allTitles.forEach(title => {
+        title.classList.remove('_spoller-active');
+        // Удаляем класс у родителя
+        const parent = title.parentElement;
+        if (parent) {
+          parent.classList.remove('_spoller-active');
+        }
+      });
+
+      const allSlides = spollersBlock.querySelectorAll('.block-compound-spollers__slide');
+      allSlides.forEach(slide => {
+        slide.classList.remove('_spoller-active');
+      });
+    }
+
+    function initSpollers(spollersArray, matchMedia = false) {
+      spollersArray.forEach((spollersBlock => {
+        spollersBlock = matchMedia ? spollersBlock.item : spollersBlock;
+        if (matchMedia.matches || !matchMedia) {
+          spollersBlock.classList.add("_spoller-init");
+          initSpollerBody(spollersBlock);
+          spollersBlock.addEventListener("click", setSpollerAction);
+
+          initCloseButtons(spollersBlock);
+        } else {
+          spollersBlock.classList.remove("_spoller-init");
+          initSpollerBody(spollersBlock, false);
+          spollersBlock.removeEventListener("click", setSpollerAction);
+        }
+      }));
+    }
+
+    function initSpollerBody(spollersBlock, hideSpollerBody = true) {
+      let spollerTitles = spollersBlock.querySelectorAll("[data-spoller]");
+      if (spollerTitles.length) {
+        spollerTitles = Array.from(spollerTitles).filter((item => item.closest("[data-spollers]") === spollersBlock));
+        spollerTitles.forEach((spollerTitle => {
+          if (hideSpollerBody) {
+            spollerTitle.removeAttribute("tabindex");
+            if (!spollerTitle.classList.contains("_spoller-active")) {
+              if (spollerTitle.nextElementSibling) {
+                spollerTitle.nextElementSibling.hidden = true;
+              }
+            }
+          } else {
+            spollerTitle.setAttribute("tabindex", "-1");
+            if (spollerTitle.nextElementSibling) {
+              spollerTitle.nextElementSibling.hidden = false;
+            }
+          }
+        }));
+      }
+    }
+
+    function initCloseButtons(spollersBlock) {
+      const closeButtons = spollersBlock.querySelectorAll('.cabinet-orders-spollers__button');
+
+      closeButtons.forEach(button => {
+        button.removeEventListener('click', closeSpollerHandler);
+        button.addEventListener('click', closeSpollerHandler);
+      });
+    }
+
+    function closeSpollerHandler(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const button = e.currentTarget;
+      const spollersBlock = button.closest('[data-spollers]');
+      const spollerItem = button.closest('.cabinet-orders-spollers__item');
+
+      if (spollersBlock && spollerItem) {
+        const spollerTitle = spollerItem.querySelector('[data-spoller]');
+
+        if (spollerTitle && spollerTitle.classList.contains('_spoller-active')) {
+          const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+
+          spollerTitle.classList.remove('_spoller-active');
+          // Удаляем класс у родителя
+          const parent = spollerTitle.parentElement;
+          if (parent) {
+            parent.classList.remove('_spoller-active');
+          }
+          spollerItem.classList.remove('_spoller-active');
+
+          const contentBlock = spollerTitle.nextElementSibling;
+          _slideUp(contentBlock, spollerSpeed);
+        }
+      }
+    }
+
+    function setSpollerAction(e) {
+      const el = e.target;
+      const spollerTitle = el.closest("[data-spoller]");
+      if (!spollerTitle) return;
+
+      if (el.closest('a') && !spollerTitle.closest('a')) {
+        return;
+      }
+
+      const spollerItem = spollerTitle.closest(".spollers__item, .cabinet-orders-spollers__item, .menu-catalog__item");
+      const spollersBlock = spollerTitle.closest("[data-spollers]");
+
+      if (!spollersBlock) return;
+
+      const oneSpoller = spollersBlock.hasAttribute("data-one-spoller");
+      const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+
+      if (!spollersBlock.querySelectorAll("._slide").length) {
+        if (oneSpoller && !spollerTitle.classList.contains("_spoller-active")) {
+          hideSpollersBody(spollersBlock);
+        }
+
+        spollerTitle.classList.toggle("_spoller-active");
+        // Добавляем/удаляем класс у родителя
+        const parent = spollerTitle.parentElement;
+        if (parent) {
+          parent.classList.toggle('_spoller-active');
+        }
+        if (spollerItem) spollerItem.classList.toggle("_spoller-active");
+
+        const contentBlock = spollerTitle.nextElementSibling;
+        if (contentBlock) {
+          _slideToggle(contentBlock, spollerSpeed);
+        }
+
+        e.preventDefault();
+      }
+    }
+
+    function hideSpollersBody(spollersBlock) {
+      const spollerActiveTitle = spollersBlock.querySelector("[data-spoller]._spoller-active");
+      const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+      if (spollerActiveTitle && !spollersBlock.querySelectorAll("._slide").length) {
+        const spollerItem = spollerActiveTitle.closest(".spollers__item, .cabinet-orders-spollers__item, .menu-catalog__item");
+
+        spollerActiveTitle.classList.remove("_spoller-active");
+        // Удаляем класс у родителя
+        const parent = spollerActiveTitle.parentElement;
+        if (parent) {
+          parent.classList.remove('_spoller-active');
+        }
+        if (spollerItem) spollerItem.classList.remove("_spoller-active");
+        _slideUp(spollerActiveTitle.nextElementSibling, spollerSpeed);
+      }
+    }
+
+    const spollersClose = document.querySelectorAll("[data-spoller-close]");
+    if (spollersClose.length) {
+      document.addEventListener("click", (function (e) {
+        const el = e.target;
+        if (!el.closest("[data-spollers]")) {
+          spollersClose.forEach((spollerClose => {
+            const spollersBlock = spollerClose.closest("[data-spollers]");
+            const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+            spollerClose.classList.remove("_spoller-active");
+            // Удаляем класс у родителя
+            const parent = spollerClose.parentElement;
+            if (parent) {
+              parent.classList.remove('_spoller-active');
+            }
+
+            const spollerItem = spollerClose.closest(".spollers__item, .cabinet-orders-spollers__item, .menu-catalog__item");
+            if (spollerItem) spollerItem.classList.remove("_spoller-active");
+
+            _slideUp(spollerClose.nextElementSibling, spollerSpeed);
+          }));
+        }
+      }));
+    }
+  }
+}
+
+function initSlideSpollers() {
+  const isMobile = window.innerWidth < 1280;
+
+  const slides = document.querySelectorAll('.block-compound-spollers__slide');
+
+  slides.forEach(slide => {
+    slide.removeEventListener('click', handleSlideClick);
+
+    if (!isMobile) {
+      slide.addEventListener('click', handleSlideClick);
+    }
+  });
+
+  document.querySelectorAll('.block-compound-spollers').forEach(spollerContainer => {
+    if (!isMobile) {
+      updatePagination(spollerContainer);
+    } else {
+      const allTexts = spollerContainer.querySelectorAll('.block-compound-spollers__text');
+      allTexts.forEach(text => {
+        text.hidden = false;
+        text.style.display = 'block';
+        text.style.height = 'auto';
+        text.style.opacity = '1';
+      });
+
+      const pagination = spollerContainer.querySelector('.block-compound-spollers__pagination');
+      if (pagination) {
+        pagination.innerHTML = '';
+      }
+    }
+  });
+}
+
+function handleSlideClick(e) {
+  if (window.innerWidth < 1280) {
+    e.preventDefault();
+    return;
+  }
+
+  const slide = e.currentTarget;
+  const spollerTitle = slide.querySelector('[data-spoller]');
+
+  if (!spollerTitle) return;
+
+  const spollersBlock = slide.closest('[data-spollers]');
+  if (!spollersBlock) return;
+
+  const oneSpoller = spollersBlock.hasAttribute('data-one-spoller');
+  const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+
+  if (oneSpoller && !spollerTitle.classList.contains('_spoller-active')) {
+    const allActiveSlides = spollersBlock.querySelectorAll('.block-compound-spollers__slide._spoller-active');
+    allActiveSlides.forEach(activeSlide => {
+      const activeTitle = activeSlide.querySelector('[data-spoller]');
+      if (activeTitle) {
+        activeTitle.classList.remove('_spoller-active');
+        // Удаляем класс у родителя
+        const parent = activeTitle.parentElement;
+        if (parent) {
+          parent.classList.remove('_spoller-active');
+        }
+        activeSlide.classList.remove('_spoller-active');
+        const content = activeTitle.nextElementSibling;
+        if (content && content.hidden !== undefined) {
+          _slideUp(content, spollerSpeed);
+        }
+      }
+    });
+  }
+
+  spollerTitle.classList.toggle('_spoller-active');
+  // Добавляем/удаляем класс у родителя
+  const parent = spollerTitle.parentElement;
+  if (parent) {
+    parent.classList.toggle('_spoller-active');
+  }
+  slide.classList.toggle('_spoller-active');
+
+  const contentBlock = spollerTitle.nextElementSibling;
+  if (contentBlock) {
+    _slideToggle(contentBlock, spollerSpeed);
+  }
+
+  const spollersContainer = slide.closest('.block-compound-spollers');
+  if (spollersContainer) {
+    updatePagination(spollersContainer);
+  }
+
+  e.preventDefault();
+}
+
+function updatePagination(spollersContainer) {
+  if (window.innerWidth < 1280) {
+    const pagination = spollersContainer.querySelector('.block-compound-spollers__pagination');
+    if (pagination) {
+      pagination.innerHTML = '';
+    }
+    return;
+  }
+
+  const slides = spollersContainer.querySelectorAll('.block-compound-spollers__slide');
+  const pagination = spollersContainer.querySelector('.block-compound-spollers__pagination');
+
+  if (!pagination || !slides.length) return;
+
+  pagination.innerHTML = '';
+
+  let activeIndex = 0;
+  slides.forEach((slide, index) => {
+    if (slide.classList.contains('_spoller-active')) {
+      activeIndex = index;
+    }
+  });
+
+  slides.forEach((slide, index) => {
+    const dot = document.createElement('button');
+    dot.classList.add('pagination__dot');
+    if (index === activeIndex) {
+      dot.classList.add('_active');
+    }
+
+    dot.addEventListener('click', function () {
+      if (window.innerWidth < 1280) return;
+
+      const spollerTitle = slide.querySelector('[data-spoller]');
+      if (spollerTitle) {
+        if (!slide.classList.contains('_spoller-active')) {
+          const spollersBlock = slide.closest('[data-spollers]');
+          const oneSpoller = spollersBlock ? spollersBlock.hasAttribute('data-one-spoller') : false;
+          const spollerSpeed = spollersBlock ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
+
+          if (oneSpoller) {
+            const allActiveSlides = spollersBlock.querySelectorAll('.block-compound-spollers__slide._spoller-active');
+            allActiveSlides.forEach(activeSlide => {
+              const activeTitle = activeSlide.querySelector('[data-spoller]');
+              if (activeTitle) {
+                activeTitle.classList.remove('_spoller-active');
+                // Удаляем класс у родителя
+                const parent = activeTitle.parentElement;
+                if (parent) {
+                  parent.classList.remove('_spoller-active');
+                }
+                activeSlide.classList.remove('_spoller-active');
+                const content = activeTitle.nextElementSibling;
+                if (content && content.hidden !== undefined) {
+                  _slideUp(content, spollerSpeed);
+                }
+              }
+            });
+          }
+
+          spollerTitle.classList.add('_spoller-active');
+          // Добавляем класс у родителя
+          const parent = spollerTitle.parentElement;
+          if (parent) {
+            parent.classList.add('_spoller-active');
+          }
+          slide.classList.add('_spoller-active');
+          const contentBlock = spollerTitle.nextElementSibling;
+          if (contentBlock) {
+            _slideDown(contentBlock, spollerSpeed);
+          }
+
+          updatePagination(spollersContainer);
+        }
+      }
+    });
+
+    pagination.appendChild(dot);
+  });
+}
+
+function initSpollersWithSlides() {
+  if (typeof spollers === 'function') {
+    spollers();
+  }
+
+  initSlideSpollers();
+}
+
+initSpollersWithSlides();
+
+window.addEventListener('resize', function () {
+  initSpollersWithSlides();
+});
+
+if (typeof MutationObserver !== 'undefined') {
+  const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.addedNodes.length) {
+        const hasNewSlides = Array.from(mutation.addedNodes).some(node =>
+          node.classList && node.classList.contains('block-compound-spollers__slide')
+        );
+        if (hasNewSlides) {
+          const container = document.querySelector('.block-compound__wrapper');
+          if (container) {
+            const spollersContainer = container.querySelector('.block-compound-spollers');
+            if (spollersContainer) {
+              updatePagination(spollersContainer);
+            }
+          }
+          initSlideSpollers();
+        }
+      }
+    });
+  });
+
+  const container = document.querySelector('.block-compound__wrapper');
+  if (container) {
+    observer.observe(container, { childList: true, subtree: true });
+  }
+}
