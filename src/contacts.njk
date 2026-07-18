@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Контакты</title>
+    {% include 'blocks/head.njk' %}
+</head>
+
+<body class="preload mp">
+    <div class="main-wrapper-outer">
+        {% include 'blocks/header.njk' %}
+        <main class="main">
+
+            <div class="block-main">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <ul>
+                            <li>
+                                <a href="#" class="home">
+                                    <svg aria-hidden="true" width="12" height="11">
+                                        <use xlink:href="img/sprite.svg#home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li><span>Контакты</span></li>
+                        </ul>
+                    </div>
+                    <div class="block-main__top">
+                        <h1 class="title1">Контакты</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block-contacts block1">
+                <div class="container">
+                    <div class="block-contacts__body">
+                        <div class="block-contacts__column">
+                            <div class="block-contacts__icon">
+                                <img src="img/icons/map1.svg" alt="">
+                            </div>
+                            <div class="block-contacts__item">
+                                <div class="block-contacts__title">
+                                    Главный офис
+                                </div>
+                                <div class="block-contacts__text">
+                                    443100, г. Самара, Молодогвардейская 225, офис 1
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-contacts__column">
+                            <div class="block-contacts__icon">
+                                <img src="img/icons/phone2.svg" alt="">
+                            </div>
+                            <div class="block-contacts__item">
+                                <div class="block-contacts__title">
+                                    Телефоны
+                                </div>
+                                <div class="block-contacts__text">
+                                    <a href="tel:78463370888">7 (846) 337-0-888</a>
+                                    <a href="tel:79276089160">7 (927) 608-91-60</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-contacts__column">
+                            <div class="block-contacts__icon">
+                                <img src="img/icons/mail1.svg" alt="">
+                            </div>
+                            <div class="block-contacts__item">
+                                <div class="block-contacts__title">
+                                    Электронный адрес
+                                </div>
+                                <div class="block-contacts__text">
+                                    <a href="mailto:profcentre@sama.ru">profcentre@sama.ru</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-contacts__column">
+                            <div class="block-contacts__icon">
+                                <img src="img/icons/vk3.svg" alt="">
+                            </div>
+                            <div class="block-contacts__item">
+                                <div class="block-contacts__title">
+                                    Вконтакте
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="./">Аккаунт Вконтакте</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Турбазы Самарской области</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Группа "Профцентр"</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Речные круизы</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="block-contacts__column">
+                            <div class="block-contacts__icon">
+                                <img src="img/icons/dz2.svg" alt="">
+                            </div>
+                            <div class="block-contacts__item">
+                                <div class="block-contacts__title">
+                                    ДЗЕН
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="./">Аккаунт В дзен</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Турбазы Самарской области</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Группа "Профцентр"</a>
+                                    </li>
+                                    <li>
+                                        <a href="./">Речные круизы</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block-contacts__map">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            {% include 'blocks/forms.njk' %}
+
+        </main>
+        {% include 'blocks/footer.njk' %}
+    </div>
+    {% include 'blocks/popups.njk' %}
+    {% include 'blocks/scripts.njk' %}
+</body>
+
+</html>

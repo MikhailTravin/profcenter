@@ -108,7 +108,7 @@ a {
     background: transparent;
     color: var(--theme-color-accent2);
     border: 1px solid rgba(82, 164, 153, 0.3);
-    box-shadow: 0 15px 30px 0 rgba(82, 164, 153, 0.2);
+    box-shadow: none;
     transition: background-color 0.3s;
     img {
       width: 15px;
@@ -403,5 +403,12 @@ a {
     span {
       font-weight: 600;
     }
+  }
+}
+
+.block1 {
+  padding: 50px 0px 80px 0px;
+  @media (max-width: 992px) {
+    padding: 50px 0px;
   }
 }
