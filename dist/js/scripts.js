@@ -1751,7 +1751,6 @@ class SelectConstructor {
       classSelectText: "select__text",
       classSelectLink: "select__link",
       classSelectOptions: "select__options",
-      classSelectOptionsScroll: "select__scroll",
       classSelectOption: "select__option",
       classSelectContent: "select__content",
       classSelectRow: "select__row",
@@ -2009,19 +2008,15 @@ class SelectConstructor {
     }
   }
   getOptions(originalSelect) {
-    const selectOptionsScroll = originalSelect.hasAttribute('data-scroll') ? `data-simplebar` : '';
-    const customMaxHeightValue = +originalSelect.dataset.scroll ? +originalSelect.dataset.scroll : null;
     let selectOptions = Array.from(originalSelect.options);
     if (selectOptions.length > 0) {
       let selectOptionsHTML = ``;
 
       selectOptions = selectOptions.filter(option => option.value);
 
-      selectOptionsHTML += `<div ${selectOptionsScroll} ${selectOptionsScroll ? `style="max-height: ${customMaxHeightValue}px"` : ''} class="${this.selectClasses.classSelectOptionsScroll}">`;
       selectOptions.forEach(selectOption => {
         selectOptionsHTML += this.getOption(selectOption, originalSelect);
       });
-      selectOptionsHTML += `</div>`;
       return selectOptionsHTML;
     }
   }
@@ -2046,36 +2041,26 @@ class SelectConstructor {
   setOptionsPosition(selectItem) {
     const originalSelect = this.getSelectElement(selectItem).originalSelect;
     const selectOptions = this.getSelectElement(selectItem, this.selectClasses.classSelectOptions).selectElement;
-    const selectItemScroll = this.getSelectElement(selectItem, this.selectClasses.classSelectOptionsScroll).selectElement;
-    const customMaxHeightValue = +originalSelect.dataset.scroll ? `${+originalSelect.dataset.scroll}px` : ``;
     const selectOptionsPosMargin = +originalSelect.dataset.optionsMargin ? +originalSelect.dataset.optionsMargin : 10;
 
     if (!selectItem.classList.contains(this.selectClasses.classSelectOpen)) {
       selectOptions.hidden = false;
-      const selectItemScrollHeight = selectItemScroll.offsetHeight ? selectItemScroll.offsetHeight : parseInt(window.getComputedStyle(selectItemScroll).getPropertyValue('max-height'));
-      const selectOptionsHeight = selectOptions.offsetHeight > selectItemScrollHeight ? selectOptions.offsetHeight : selectItemScrollHeight + selectOptions.offsetHeight;
-      const selectOptionsScrollHeight = selectOptionsHeight - selectItemScrollHeight;
+      const selectOptionsHeight = selectOptions.offsetHeight;
       selectOptions.hidden = true;
 
       const selectItemHeight = selectItem.offsetHeight;
       const selectItemPos = selectItem.getBoundingClientRect().top;
-      const selectItemTotal = selectItemPos + selectOptionsHeight + selectItemHeight + selectOptionsScrollHeight;
+      const selectItemTotal = selectItemPos + selectOptionsHeight + selectItemHeight;
       const selectItemResult = window.innerHeight - (selectItemTotal + selectOptionsPosMargin);
 
       if (selectItemResult < 0) {
-        const newMaxHeightValue = selectOptionsHeight + selectItemResult;
-        if (newMaxHeightValue < 100) {
-          selectItem.classList.add('select--show-top');
-          selectItemScroll.style.maxHeight = selectItemPos < selectOptionsHeight ? `${selectItemPos - (selectOptionsHeight - selectItemPos)}px` : customMaxHeightValue;
-        } else {
-          selectItem.classList.remove('select--show-top');
-          selectItemScroll.style.maxHeight = `${newMaxHeightValue}px`;
-        }
+        selectItem.classList.add('select--show-top');
+      } else {
+        selectItem.classList.remove('select--show-top');
       }
     } else {
       setTimeout(() => {
         selectItem.classList.remove('select--show-top');
-        selectItemScroll.style.maxHeight = customMaxHeightValue;
       }, +originalSelect.dataset.speed);
     }
   }
@@ -2237,7 +2222,6 @@ function spollers() {
       const allTitles = spollersBlock.querySelectorAll('[data-spoller]');
       allTitles.forEach(title => {
         title.classList.remove('_spoller-active');
-        // Удаляем класс у родителя
         const parent = title.parentElement;
         if (parent) {
           parent.classList.remove('_spoller-active');
@@ -2313,7 +2297,6 @@ function spollers() {
           const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
 
           spollerTitle.classList.remove('_spoller-active');
-          // Удаляем класс у родителя
           const parent = spollerTitle.parentElement;
           if (parent) {
             parent.classList.remove('_spoller-active');
@@ -2349,7 +2332,6 @@ function spollers() {
         }
 
         spollerTitle.classList.toggle("_spoller-active");
-        // Добавляем/удаляем класс у родителя
         const parent = spollerTitle.parentElement;
         if (parent) {
           parent.classList.toggle('_spoller-active');
@@ -2372,7 +2354,6 @@ function spollers() {
         const spollerItem = spollerActiveTitle.closest(".spollers__item, .cabinet-orders-spollers__item, .menu-catalog__item");
 
         spollerActiveTitle.classList.remove("_spoller-active");
-        // Удаляем класс у родителя
         const parent = spollerActiveTitle.parentElement;
         if (parent) {
           parent.classList.remove('_spoller-active');
@@ -2391,7 +2372,6 @@ function spollers() {
             const spollersBlock = spollerClose.closest("[data-spollers]");
             const spollerSpeed = spollersBlock.dataset.spollersSpeed ? parseInt(spollersBlock.dataset.spollersSpeed) : 500;
             spollerClose.classList.remove("_spoller-active");
-            // Удаляем класс у родителя
             const parent = spollerClose.parentElement;
             if (parent) {
               parent.classList.remove('_spoller-active');
@@ -2464,7 +2444,6 @@ function handleSlideClick(e) {
       const activeTitle = activeSlide.querySelector('[data-spoller]');
       if (activeTitle) {
         activeTitle.classList.remove('_spoller-active');
-        // Удаляем класс у родителя
         const parent = activeTitle.parentElement;
         if (parent) {
           parent.classList.remove('_spoller-active');
@@ -2479,7 +2458,6 @@ function handleSlideClick(e) {
   }
 
   spollerTitle.classList.toggle('_spoller-active');
-  // Добавляем/удаляем класс у родителя
   const parent = spollerTitle.parentElement;
   if (parent) {
     parent.classList.toggle('_spoller-active');
@@ -2545,7 +2523,6 @@ function updatePagination(spollersContainer) {
               const activeTitle = activeSlide.querySelector('[data-spoller]');
               if (activeTitle) {
                 activeTitle.classList.remove('_spoller-active');
-                // Удаляем класс у родителя
                 const parent = activeTitle.parentElement;
                 if (parent) {
                   parent.classList.remove('_spoller-active');
@@ -2560,7 +2537,6 @@ function updatePagination(spollersContainer) {
           }
 
           spollerTitle.classList.add('_spoller-active');
-          // Добавляем класс у родителя
           const parent = spollerTitle.parentElement;
           if (parent) {
             parent.classList.add('_spoller-active');
@@ -2620,3 +2596,357 @@ if (typeof MutationObserver !== 'undefined') {
     observer.observe(container, { childList: true, subtree: true });
   }
 }
+
+//========================================================================================================================================================
+
+const filterContainer = document.querySelector('.catalog-filter');
+if (filterContainer) {
+
+  const filterButton = document.querySelector('.catalog-filter__button');
+  const filterBody = document.querySelector('.catalog-filter__content');
+  const closeButton = document.querySelector('.catalog-filter__close');
+
+  function isMobile() {
+    return window.innerWidth <= 992;
+  }
+
+  function openFilter() {
+    if (!isMobile()) return;
+    document.documentElement.classList.add('filter-open');
+  }
+
+  function closeFilter() {
+    document.documentElement.classList.remove('filter-open');
+  }
+
+  filterButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isMobile()) return;
+
+    if (document.documentElement.classList.contains('filter-open')) {
+      closeFilter();
+    } else {
+      openFilter();
+    }
+  });
+
+  closeButton.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (document.documentElement.classList.contains('filter-open')) {
+      closeFilter();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!isMobile()) return;
+    if (!document.documentElement.classList.contains('filter-open')) return;
+
+    const isClickInsideBody = filterBody.contains(e.target);
+    const isClickOnButton = filterButton.contains(e.target);
+    const isClickInsideSelect = e.target.closest('.select') !== null;
+    const isClickInsideSelectTag = e.target.closest('._select-tag') !== null;
+    const isClickInsideCalendar = e.target.closest('.calendar') !== null;
+    const isClickInsideCalendarBtn = e.target.closest('.calendar-btn') !== null;
+
+    if (!isClickInsideBody && !isClickOnButton && !isClickInsideSelect && !isClickInsideSelectTag && !isClickInsideCalendar && !isClickInsideCalendarBtn) {
+      closeFilter();
+    }
+  });
+
+  let resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      if (!isMobile() && document.documentElement.classList.contains('filter-open')) {
+        closeFilter();
+      }
+    }, 200);
+  });
+
+  filterBody.addEventListener('click', function (e) {
+    const isClickInsideSelect = e.target.closest('.select') !== null;
+    const isClickInsideSelectTag = e.target.closest('._select-tag') !== null;
+    const isClickInsideCalendar = e.target.closest('.calendar') !== null;
+    const isClickInsideCalendarBtn = e.target.closest('.calendar-btn') !== null;
+
+    if (!isClickInsideSelect && !isClickInsideSelectTag && !isClickInsideCalendar && !isClickInsideCalendarBtn) {
+      e.stopPropagation();
+    }
+  });
+}
+
+//========================================================================================================================================================
+
+const calendars = document.querySelectorAll(".calendar");
+if (calendars.length > 0) {
+  calendars.forEach(calendar => {
+    const calendarMain = calendar.querySelector(".calendar__main");
+    const calHeaderTitle = calendar.querySelector(".calendar__header span");
+
+    const parentInputs = calendar.closest(".form-calendar__inputs");
+
+    if (!parentInputs) {
+      return;
+    }
+
+    const input = parentInputs.querySelector(".input-calendar");
+    if (!input) {
+      return;
+    }
+
+    const months = [
+      "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
+      "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+    ];
+
+    const todayTimestamp = Date.now() - (Date.now() % (24 * 60 * 60 * 1000));
+    let selectedDate = null;
+
+    const getNumberOfDays = (year, month) => {
+      return new Date(year, month + 1, 0).getDate();
+    };
+
+    const getDayDetails = (args) => {
+      let date = args.index - args.firstDay;
+      let dayOfWeek = (args.index % 7 + 7) % 7;
+      let prevMonth = args.month - 1;
+      let nextMonth = args.month + 1;
+      let prevYear = args.year;
+      let nextYear = args.year;
+
+      if (prevMonth < 0) {
+        prevMonth = 11;
+        prevYear--;
+      }
+      if (nextMonth > 11) {
+        nextMonth = 0;
+        nextYear++;
+      }
+
+      let prevMonthDays = getNumberOfDays(prevYear, prevMonth);
+      let currentMonthDays = getNumberOfDays(args.year, args.month);
+
+      let displayDate, displayMonth, displayYear;
+      if (date < 0) {
+        displayDate = prevMonthDays + date + 1;
+        displayMonth = prevMonth;
+        displayYear = prevYear;
+      } else if (date >= currentMonthDays) {
+        displayDate = date - currentMonthDays + 1;
+        displayMonth = nextMonth;
+        displayYear = nextYear;
+      } else {
+        displayDate = date + 1;
+        displayMonth = args.month;
+        displayYear = args.year;
+      }
+
+      let timestamp = new Date(Date.UTC(displayYear, displayMonth, displayDate)).getTime();
+      return {
+        date: displayDate,
+        day: dayOfWeek,
+        month: displayMonth === args.month ? 0 : displayMonth < args.month ? -1 : 1,
+        timestamp: timestamp
+      };
+    };
+
+    const getMonthDetails = (year, month) => {
+      let firstDay = new Date(Date.UTC(year, month, 1)).getUTCDay();
+      firstDay = firstDay === 0 ? 6 : firstDay - 1;
+      let monthArray = [];
+      for (let i = 0; i < 42; i++) {
+        monthArray.push(getDayDetails({
+          index: i,
+          firstDay: firstDay,
+          year: year,
+          month: month
+        }));
+      }
+      return monthArray;
+    };
+
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let monthDetails = getMonthDetails(year, month);
+
+    const setCalBody = (monthDetails) => {
+      calendarMain.innerHTML = "";
+      monthDetails.forEach(day => {
+        let div = document.createElement("div");
+        let span = document.createElement("span");
+
+        div.classList.add("cell_wrapper");
+        div.classList.add("cal_date");
+
+        if (day.month === 0) {
+          div.classList.add("current");
+        } else if (day.month === -1) {
+          div.classList.add("prev-month");
+        } else if (day.month === 1) {
+          div.classList.add("next-month");
+        }
+
+        if (day.timestamp === todayTimestamp && day.month === 0) {
+          div.classList.add("isCurrent");
+        }
+
+        if (day.timestamp < todayTimestamp) {
+          div.classList.add("disabled");
+          div.style.pointerEvents = "none";
+        }
+
+        span.classList.add("cell_item");
+        span.innerText = day.date;
+        div.setAttribute("data-timestamp", day.timestamp);
+        div.appendChild(span);
+        calendarMain.appendChild(div);
+      });
+    };
+
+    const setHeader = (year, month) => {
+      calHeaderTitle.innerHTML = `${months[month]} ${year}`;
+    };
+
+    const navigateMonth = (offset) => {
+      month += offset;
+      if (month === -1) {
+        month = 11;
+        year--;
+      } else if (month === 12) {
+        month = 0;
+        year++;
+      }
+      monthDetails = getMonthDetails(year, month);
+      setHeader(year, month);
+      setCalBody(monthDetails);
+    };
+
+    setHeader(year, month);
+    setCalBody(monthDetails);
+
+    let calendarBtns = calendar.querySelectorAll(".calendar-btn");
+    if (calendarBtns.length === 0) {
+      calendarBtns = parentInputs.querySelectorAll(".calendar-btn");
+    }
+
+    calendarBtns.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        let offset = btn.classList.contains("calendar__btn-prev") ? -1 : 1;
+        navigateMonth(offset);
+      });
+    });
+
+    const clearSelection = () => {
+      selectedDate = null;
+      calendar.querySelectorAll(".cell_wrapper").forEach(cell => {
+        cell.classList.remove("isSelected");
+      });
+    };
+
+    const updateInputValue = (timestamp) => {
+      const dateString = getDateStringFromTimestamp(timestamp);
+      input.value = dateString;
+
+      if (input.hasAttribute("data-start")) {
+        input.dataset.start = dateString;
+      } else {
+        input.dataset.end = dateString;
+      }
+    };
+
+    const getDateStringFromTimestamp = (timestamp) => {
+      let dateObject = new Date(timestamp);
+      let year = dateObject.getUTCFullYear();
+      let month = String(dateObject.getUTCMonth() + 1).padStart(2, '0');
+      let day = String(dateObject.getUTCDate()).padStart(2, '0');
+      return `${day}-${month}-${year}`;
+    };
+
+    const closeCalendar = () => {
+      document.querySelectorAll('.form-calendar__inputs').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      document.documentElement.classList.remove('open-calendar');
+
+      const filterTabsButtons = document.querySelectorAll('.drop-down-button');
+      const shadow = document.querySelector('.shadow');
+      if (shadow) {
+        shadow.classList.remove("_active");
+      }
+
+      if (!document.documentElement.classList.contains('filter-open')) {
+        document.documentElement.classList.remove('filter-open');
+        filterTabsButtons.forEach((button) => button.classList.remove("_active"));
+      }
+    };
+
+    calendarMain.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const target = e.target.closest(".cell_wrapper.current");
+      if (!target || target.classList.contains("disabled")) {
+        return;
+      }
+
+      const cellTimestamp = parseInt(target.getAttribute("data-timestamp"));
+      if (!cellTimestamp) {
+        return;
+      }
+
+      clearSelection();
+      selectedDate = cellTimestamp;
+      target.classList.add("isSelected");
+      updateInputValue(selectedDate);
+
+      closeCalendar();
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const formInputsBlocks = document.querySelectorAll('.form-calendar__inputs');
+
+  if (formInputsBlocks.length > 0) {
+    formInputsBlocks.forEach(block => {
+      block.addEventListener('click', function (e) {
+        e.stopPropagation();
+
+        const isCalendarClick = e.target.closest('.calendar');
+        const isCalendarBtnClick = e.target.closest('.calendar-btn');
+
+        if (isCalendarClick || isCalendarBtnClick) {
+          return;
+        }
+
+        const wasActive = this.classList.contains('active');
+
+        document.querySelectorAll('.form-calendar__inputs').forEach(el => {
+          el.classList.remove('active');
+        });
+
+        document.documentElement.classList.remove('open-calendar');
+
+        if (!wasActive) {
+          this.classList.add('active');
+          document.documentElement.classList.add('open-calendar');
+        }
+      });
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.form-calendar__inputs')) {
+      document.querySelectorAll('.form-calendar__inputs').forEach(el => {
+        el.classList.remove('active');
+      });
+
+      document.documentElement.classList.remove('open-calendar');
+    }
+  });
+});
