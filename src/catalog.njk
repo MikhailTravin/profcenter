@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>Каталог</title>
+    {% include 'blocks/head.njk' %}
+</head>
+
+<body class="preload mp">
+    <div class="main-wrapper-outer">
+        {% include 'blocks/header.njk' %}
+        <main class="main">
+
+            <div class="block-main">
+                <div class="container">
+                    <div class="breadcrumbs">
+                        <ul>
+                            <li>
+                                <a href="#" class="home">
+                                    <svg aria-hidden="true" width="12" height="11">
+                                        <use xlink:href="img/sprite.svg#home"></use>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li><span>Туры по России</span></li>
+                        </ul>
+                    </div>
+                    <div class="block-main__top">
+                        <h1 class="title1">Туры по России</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="block-main-catalog block1">
+                <div class="container">
+                    <div class="block-main-catalog__content">
+                        <div class="block-main-catalog__left">
+                            <div data-da=".block-main-catalog__right, 992, first" class="catalog-filter">
+                                <div class="catalog-filter__button">
+                                    <img loading="lazy" src="img/icons/filter.svg" alt="">
+                                    Фильтр
+                                </div>
+                                <div class="catalog-filter__content">
+                                    <div class="catalog-filter__top">
+                                        <span>Фильтр</span>
+                                        <div class="catalog-filter__close">
+                                            <img src="img/icons/close2.svg" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="catalog-filter__body">
+                                        <div class="catalog-filter__column">
+                                            <div class="catalog-filter__title">
+                                                Направление
+                                            </div>
+                                            <div class="catalog-filter__checkboxes">
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="1"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Москва</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="2"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Золотое кольцо</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="3"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Владимирская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="4"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Железнодорожные туры</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="5"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Калужская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="6"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Московская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="7"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Орловскоя область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="8"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Рязанская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="9"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Тверская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="10"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Тульская область</span>
+                                                    </span>
+                                                </label>
+                                                <label class="checkbox">
+                                                    <input class="checkbox__input" type="checkbox" value="11"
+                                                        name="form[]">
+                                                    <span class="checkbox__label">
+                                                        <span class="checkbox__icon">
+                                                            <svg aria-hidden="true" width="10" height="9">
+                                                                <use xlink:href="img/sprite.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="checkbox__text">Ярославкоя область</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="catalog-filter__column">
+                                            <div class="catalog-filter__title">
+                                                Тип тура
+                                            </div>
+                                            <select name="form[]" class="select">
+                                                <option value="1" selected>Любой</option>
+                                                <option value="2">Зимние туры</option>
+                                                <option value="3">Летние туры</option>
+                                                <option value="4">Тематические туры</option>
+                                                <option value="5">Туры для семей с детьми</option>
+                                                <option value="6">Корпоративные туры</option>
+                                                <option value="7">Школьные туры</option>
+                                                <option value="8">Оздоровительные туры</option>
+                                            </select>
+                                        </div>
+                                        <div class="catalog-filter__column">
+                                            <div class="catalog-filter__title">
+                                                Продолжительность
+                                            </div>
+                                            <select name="form[]" class="select">
+                                                <option value="1" selected>Любой</option>
+                                                <option value="2">Зимние туры</option>
+                                                <option value="3">Летние туры</option>
+                                                <option value="4">Тематические туры</option>
+                                                <option value="5">Туры для семей с детьми</option>
+                                                <option value="6">Корпоративные туры</option>
+                                                <option value="7">Школьные туры</option>
+                                                <option value="8">Оздоровительные туры</option>
+                                            </select>
+                                        </div>
+                                        <div class="catalog-filter__column">
+                                            <div class="catalog-filter__title">
+                                                Дата тура
+                                            </div>
+                                            <div class="form-calendar">
+                                                <div class="form-calendar__inputs">
+                                                    <div class="form-calendar__input">
+                                                        <div class="form-calendar__label">
+                                                            с
+                                                        </div>
+                                                        <input readonly autocomplete="off" type="text"
+                                                            class="input-calendar" data-start name="form[]"
+                                                            data-error="Ошибка" placeholder="">
+                                                        <img src="img/icons/calendar.svg" alt="">
+                                                    </div>
+                                                    <div class="calendar">
+                                                        <div class="calendar__content">
+                                                            <div class="calendar__header">
+                                                                <button type="button"
+                                                                    class="calendar__btn-prev calendar-btn">
+                                                                    <img src="img/icons/arrow2.svg" alt="">
+                                                                </button>
+                                                                <span></span>
+                                                                <button type="button"
+                                                                    class="calendar__btn-next calendar-btn">
+                                                                    <img src="img/icons/arrow2.svg" alt="">
+                                                                </button>
+                                                            </div>
+                                                            <div class="calendar__wrapper">
+                                                                <div class="calendar__days">
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Пн</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Вт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Ср</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Чт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Пт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Сб</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Вс</span></div>
+                                                                </div>
+                                                                <div class="calendar__main"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-calendar__inputs">
+                                                    <div class="form-calendar__input">
+                                                        <div class="form-calendar__label">
+                                                            по
+                                                        </div>
+                                                        <input readonly autocomplete="off" type="text"
+                                                            class="input-calendar" data-start name="form[]"
+                                                            data-error="Ошибка" placeholder="">
+                                                        <img src="img/icons/calendar.svg" alt="">
+                                                    </div>
+                                                    <div class="calendar">
+                                                        <div class="calendar__content">
+                                                            <div class="calendar__header">
+                                                                <button type="button"
+                                                                    class="calendar__btn-prev calendar-btn">
+                                                                    <img src="img/icons/arrow2.svg" alt=""></button>
+                                                                <span></span>
+                                                                <button type="button"
+                                                                    class="calendar__btn-next calendar-btn">
+                                                                    <img src="img/icons/arrow2.svg" alt=""></button>
+                                                            </div>
+                                                            <div class="calendar__wrapper">
+                                                                <div class="calendar__days">
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Пн</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Вт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Ср</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Чт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Пт</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Сб</span></div>
+                                                                    <div class="cell_wrapper cal_days"><span
+                                                                            class="cell_item">Вс</span></div>
+                                                                </div>
+                                                                <div class="calendar__main"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn">
+                                            <span>Применить</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="block-main-catalog__columns">
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image27.webp" alt="">
+                                        <span>Cанаторно-курортное<br> лечение</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image28.webp" alt="">
+                                        <span>Азовское побережье</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image29.webp" alt="">
+                                        <span>Туристические поезда из Самары</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image30.webp" alt="">
+                                        <span>Черноморское побережье</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image31.webp" alt="">
+                                        <span>Школьные туры</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image32.webp" alt="">
+                                        <span>Туры и отдых в СНГ</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image33.webp" alt="">
+                                        <span>Экскурсионные туры</span>
+                                    </div>
+                                </a>
+                                <a href="./" class="block-main-catalog__column">
+                                    <div class="block-main-catalog__text">
+                                        <img loading="lazy" src="img/image34.webp" alt="">
+                                        <span>Саратовская область</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="block-main-catalog__right">
+                            <div class="block-main-catalog-sorting">
+                                <div class="block-main-catalog-sorting__name">Всего 78 туров</div>
+                                <div class="block-main-catalog-sorting__body">
+                                    <div class="block-main-catalog-sorting__title">
+                                        Сортировать по:
+                                    </div>
+                                    <div class="block-main-catalog-sorting__buttons">
+                                        <button type="button" class="block-main-catalog-sorting__button active">
+                                            Дате
+                                            <svg aria-hidden="true" width="6" height="12">
+                                                <use xlink:href="img/sprite.svg#arrow3"></use>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="block-main-catalog-sorting__button">
+                                            Цене
+                                            <svg aria-hidden="true" width="6" height="12">
+                                                <use xlink:href="img/sprite.svg#arrow3"></use>
+                                            </svg>
+                                        </button>
+                                        <button type="button" class="block-main-catalog-sorting__button">
+                                            Популярности
+                                            <svg aria-hidden="true" width="6" height="12">
+                                                <use xlink:href="img/sprite.svg#arrow3"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="block-main-catalog__body">
+                                <div class="block-main-catalog__cards">
+                                    <div class="product-card" data-watch data-watch-once>
+                                        <div class="product-card__star">
+                                            <img loading="lazy" src="img/icons/star1.svg" alt="">
+                                        </div>
+                                        <a href="#" class="product-card__image">
+                                            <img loading="lazy" src="img/image4.webp" alt="">
+                                        </a>
+                                        <div class="product-card-top">
+                                            <a href="#" class="product-card-top__title">
+                                                Волжская кругосветка
+                                            </a>
+                                            <div class="product-card-top__routes">
+                                                <div class="product-card-top__route-title">Маршрут:</div>
+                                                <div class="product-card-top__route">
+                                                    <span>Самара</span>
+                                                    <span>Тольятти</span>
+                                                    <span>Сызрань</span>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                За три дня Вы сможете посетить три совершенно разных города
+                                                Самарского региона, расположенных на Волге и ее притоках,
+                                                Жигулевском море, насладиться необыкновенной живописной волжской
+                                                природой и совершить незабываемое путешествие! Добро пожаловать в
+                                                Самарскую область!
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    <span>Группы:</span>
+                                                    от 30 человек
+                                                </li>
+                                            </ul>
+                                            <div class="product-card-top__tags">
+                                                <div class="product-card-top__tag">#Туры по Самаре</div>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-card-bottom__price">
+                                                <span>от</span> 27650 р
+                                                <span>3 дня / 2 ночи </span>
+                                            </div>
+                                            <a href="./" download="files/programs/programs3.doc"
+                                                class="btn"><span>Смотреть
+                                                    тур</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-card" data-watch data-watch-once>
+                                        <div class="product-card__star">
+                                            <img loading="lazy" src="img/icons/star1.svg" alt="">
+                                        </div>
+                                        <a href="#" class="product-card__image">
+                                            <img loading="lazy" src="img/image13.webp" alt="">
+                                        </a>
+                                        <div class="product-card-top">
+                                            <a href="#" class="product-card-top__title">
+                                                Жигулевское путешествие.
+                                            </a>
+                                            <div class="product-card-top__routes">
+                                                <div class="product-card-top__route-title">Маршрут:</div>
+                                                <div class="product-card-top__route">
+                                                    <span>Самара</span>
+                                                    <span>Тольятти</span>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                За три дня Вы сможете посетить два самых крупных города Самарского
+                                                региона – город Самару и город Тольятти, расположенных на Волге и
+                                                Жигулевском море, насладиться необыкновенной живописной волжской
+                                                природой и совершить незабываемое путешествие! Добро пожаловать в
+                                                Самарскую область!
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    <span>Группы:</span>
+                                                    30+ человек
+                                                </li>
+                                            </ul>
+                                            <div class="product-card-top__tags">
+                                                <div class="product-card-top__tag">#Туры по Самаре</div>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-card-bottom__price">
+                                                <span>от</span> 28950 р
+                                                <span>3 дня / 2 ночи</span>
+                                            </div>
+                                            <a href="./" download="files/programs/programs4.doc"
+                                                class="btn"><span>Смотреть
+                                                    тур</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-card" data-watch data-watch-once>
+                                        <div class="product-card__star">
+                                            <img loading="lazy" src="img/icons/star1.svg" alt="">
+                                        </div>
+                                        <a href="#" class="product-card__image">
+                                            <img loading="lazy" src="img/image4.webp" alt="">
+                                        </a>
+                                        <div class="product-card-top">
+                                            <a href="#" class="product-card-top__title">
+                                                Волжская кругосветка
+                                            </a>
+                                            <div class="product-card-top__routes">
+                                                <div class="product-card-top__route-title">Маршрут:</div>
+                                                <div class="product-card-top__route">
+                                                    <span>Самара</span>
+                                                    <span>Тольятти</span>
+                                                    <span>Сызрань</span>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                За три дня Вы сможете посетить три совершенно разных города
+                                                Самарского региона, расположенных на Волге и ее притоках,
+                                                Жигулевском море, насладиться необыкновенной живописной волжской
+                                                природой и совершить незабываемое путешествие! Добро пожаловать в
+                                                Самарскую область!
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    <span>Группы:</span>
+                                                    от 30 человек
+                                                </li>
+                                            </ul>
+                                            <div class="product-card-top__tags">
+                                                <div class="product-card-top__tag">#Туры по Самаре</div>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-card-bottom__price">
+                                                <span>от</span> 27650 р
+                                                <span>3 дня / 2 ночи </span>
+                                            </div>
+                                            <a href="./" download="files/programs/programs3.doc"
+                                                class="btn"><span>Смотреть
+                                                    тур</span></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-card" data-watch data-watch-once>
+                                        <div class="product-card__star">
+                                            <img loading="lazy" src="img/icons/star1.svg" alt="">
+                                        </div>
+                                        <a href="#" class="product-card__image">
+                                            <img loading="lazy" src="img/image13.webp" alt="">
+                                        </a>
+                                        <div class="product-card-top">
+                                            <a href="#" class="product-card-top__title">
+                                                Жигулевское путешествие.
+                                            </a>
+                                            <div class="product-card-top__routes">
+                                                <div class="product-card-top__route-title">Маршрут:</div>
+                                                <div class="product-card-top__route">
+                                                    <span>Самара</span>
+                                                    <span>Тольятти</span>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                За три дня Вы сможете посетить два самых крупных города Самарского
+                                                региона – город Самару и город Тольятти, расположенных на Волге и
+                                                Жигулевском море, насладиться необыкновенной живописной волжской
+                                                природой и совершить незабываемое путешествие! Добро пожаловать в
+                                                Самарскую область!
+                                            </p>
+                                            <ul>
+                                                <li>
+                                                    <span>Группы:</span>
+                                                    30+ человек
+                                                </li>
+                                            </ul>
+                                            <div class="product-card-top__tags">
+                                                <div class="product-card-top__tag">#Туры по Самаре</div>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-bottom">
+                                            <div class="product-card-bottom__price">
+                                                <span>от</span> 28950 р
+                                                <span>3 дня / 2 ночи</span>
+                                            </div>
+                                            <a href="./" download="files/programs/programs4.doc"
+                                                class="btn"><span>Смотреть
+                                                    тур</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-transparent">
+                                    <img loading="lazy" src="img/icons/update.svg" alt="">
+                                    <span>Загрузить еще</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'blocks/forms.njk' %}
+
+        </main>
+        {% include 'blocks/footer.njk' %}
+    </div>
+    {% include 'blocks/popups.njk' %}
+    {% include 'blocks/scripts.njk' %}
+</body>
+
+</html>

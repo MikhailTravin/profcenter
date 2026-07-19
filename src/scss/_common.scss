@@ -11,7 +11,8 @@ body {
   .lock & {
     overflow: hidden;
   }
-  .menu-open & {
+  .menu-open &,
+  .filter-open & {
     overflow: hidden;
   }
 }
