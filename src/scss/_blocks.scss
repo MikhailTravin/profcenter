@@ -3401,3 +3401,115 @@
         gap: 10px;
     }
 }
+
+//========================================================================================================================================================
+
+.block-cookie {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    background: var(--347cc4);
+    padding: 46px 20px 53px 20px;
+    z-index: 60;
+    @media (max-width: 992px) {
+        padding: 20px;
+    }
+    // .block-cookie__content
+
+    &__content {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        justify-content: space-between;
+        max-width: 1172px;
+        margin: 0 auto;
+        width: 100%;
+        @media (max-width: 992px) {
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            gap: 20px;
+        }
+    }
+
+    // .block-cookie__body
+
+    &__body {
+        flex: 0 1 631px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        @media (max-width: 992px) {
+            flex: 0 1 auto;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            gap: 10px;
+        }
+        p {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 125%;
+            color: var(--ffffff);
+            @media (max-width: 768px) {
+                font-size: 14px;
+            }
+            a {
+                font-weight: 600;
+                text-decoration: underline;
+                text-decoration-skip-ink: none;
+                transition: opacity 0.3s;
+                &:hover {
+                    opacity: 0.7;
+                }
+            }
+        }
+    }
+
+    // .block-cookie__title
+
+    &__title {
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 108%;
+        color: var(--ffffff);
+        @media (max-width: 768px) {
+            font-size: 20px;
+        }
+    }
+
+    // .block-cookie__buttons
+
+    &__buttons {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 10px 20px;
+        @media (max-width: 992px) {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @media (max-width: 550px) {
+            grid-template-columns: 1fr;
+        }
+        .btn {
+            @media (max-width: 992px) {
+                width: 100%;
+            }
+            @media (max-width: 550px) {
+                min-height: 45px;
+                font-size: 13px;
+            }
+            &.btn-transparent {
+                color: var(--ffffff);
+                border: 1px solid var(--f2f5f9);
+                box-shadow: 0 15px 30px 0 rgba(82, 164, 153, 0.2);
+            }
+        }
+    }
+}
