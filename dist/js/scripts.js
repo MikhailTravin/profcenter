@@ -2950,3 +2950,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+//========================================================================================================================================================
+
+const cookieBlock = document.querySelector('.block-cookie');
+if (cookieBlock) {
+  const acceptBtn = cookieBlock.querySelector('.btn-add');
+  const rejectBtn = cookieBlock.querySelector('.btn-close');
+
+  function hideCookieBlock() {
+    cookieBlock.style.display = 'none';
+  }
+
+  function acceptAllCookies() {
+    console.log('Приняты все cookie');
+    localStorage.setItem('cookiesAccepted', 'true');
+    localStorage.setItem('cookiesPreferences', JSON.stringify({
+      necessary: true,
+      functional: true,
+      analytics: true,
+      advertising: true
+    }));
+
+    hideCookieBlock();
+  }
+
+  function rejectCookies() {
+    localStorage.setItem('cookiesAccepted', 'false');
+    localStorage.setItem('cookiesPreferences', JSON.stringify({
+      necessary: true,
+      functional: false,
+      analytics: false,
+      advertising: false
+    }));
+
+    hideCookieBlock();
+  }
+
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', acceptAllCookies);
+  }
+
+  if (rejectBtn) {
+    rejectBtn.addEventListener('click', rejectCookies);
+  }
+  const cookiesAccepted = localStorage.getItem('cookiesAccepted');
+  if (cookiesAccepted === 'true') {
+    hideCookieBlock();
+  }
+}
